@@ -1,0 +1,4 @@
+interface:
+  display_name: "Upgrade Modulus"
+  short_description: "Move the lockstep Modulus packages to a new version"
+  default_prompt: "Use $upgrade-modulus to upgrade the Modulus packages."

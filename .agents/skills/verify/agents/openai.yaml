@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Change"
+  short_description: "Lint, typecheck, build, and boot the build"
+  default_prompt: "Use $verify to verify the current changes."

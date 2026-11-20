@@ -1,0 +1,4 @@
+interface:
+  display_name: "Typecheck"
+  short_description: "Run TypeScript type checking"
+  default_prompt: "Use $typecheck to check types."

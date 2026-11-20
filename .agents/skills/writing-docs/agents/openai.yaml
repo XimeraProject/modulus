@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Docs"
+  short_description: "Write or revise the OSU installation docs"
+  default_prompt: "Use $writing-docs to write or revise an installation doc."

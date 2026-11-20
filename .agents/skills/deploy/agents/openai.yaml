@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy to ECS"
+  short_description: "Build, push, and deploy to AWS ECS with authorisation"
+  default_prompt: "Use $deploy to deploy the current main branch."

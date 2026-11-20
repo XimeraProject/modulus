@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "port": 3000
+    },
+    {
+      "name": "devlti",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["devlti"],
+      "port": 3000
+    },
+    {
+      "name": "postgres",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "./postgres/postgres.sh up"],
+      "port": 5432
+    },
+    {
+      "name": "adminer",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "./postgres/postgres.sh --profile adminer up"],
+      "port": 9001
+    }
+  ]
+}
