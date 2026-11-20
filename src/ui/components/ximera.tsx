@@ -11,7 +11,7 @@ export function Ximera() {
         <p className="text-muted-foreground text-lg mb-6 text-pretty">
           <strong className="text-foreground">Ximera</strong> is an open-source, interactive
           textbook platform, most commonly used in teaching math. The name stands for{' '}
-          <span className="text-teal-500 font-medium">
+          <span className="font-medium text-scarlet-500 dark:text-scarlet-300">
             {'"'}Ximera: Interactive, Mathematics, Education, Resources, for All.{'"'}
           </span>
         </p>
