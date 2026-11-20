@@ -1,52 +1,50 @@
 import { Button, Container, Section } from '@infonomic/uikit/react'
 import { LangLink, Link } from '@modulus-learning/host-tanstack-start/framework/index'
 import type { Locale } from '@modulus-learning/host-tanstack-start/i18n/i18n-config'
-import { ArrowRight, BookOpen } from 'lucide-react'
+import { ShieldCheck } from 'lucide-react'
 
-import { HeroAnimation } from './hero-animation'
+import osuBlack from '@/ui/images/osu-black.svg'
+import osuWhite from '@/ui/images/osu-white.svg'
+import { HeroFlow } from './hero-flow'
 
 export function Hero({ lng }: { lng: Locale }) {
   return (
-    <Section className="pt-8 md:pt-14 pb-20 overflow-hidden">
+    <Section className="pt-10 pb-20 md:pt-16">
       <Container className="xl:max-w-[68rem] 2xl:max-w-[74.375rem]">
-        {/* <Container className="mx-auto lg:max-w-[1050px] xl:max-w-[1100px] 2xl:max-w-[1150px]"> */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-12 items-center">
-          {/* Left: Content */}
-          <div className="text-center lg:text-left">
-            {/* Early development badge */}
-            <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-1.5 mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
-              </span>
-              <span className="text-sm text-accent font-medium">In Development</span>
-            </div>
+        <div className="grid items-center gap-14 lg:grid-cols-[5fr_6fr] lg:gap-16">
+          <div>
+            <img
+              src={osuBlack}
+              width={140}
+              height={96}
+              alt="The Ohio State University"
+              className="mx-auto mb-10 block dark:hidden"
+            />
+            <img
+              src={osuWhite}
+              width={140}
+              height={96}
+              alt="The Ohio State University"
+              className="mx-auto mb-10 hidden dark:block"
+            />
 
-            <h1 className="text-5xl md:text-6xl lg:text-6xl font-bold text-foreground mb-6 text-balance leading-[1.05]">
-              Understand{' '}
-              <span className="bg-linear-to-r from-sky-500 via-sky-400 to-fuchsia-500 bg-clip-text text-transparent">
-                Learning
-              </span>
+            <h1 className="mb-6 text-balance text-4xl font-semibold leading-[1.08] tracking-tight text-gray-950 md:text-5xl lg:text-[3rem] dark:text-white">
+              Modulus for Ximera and Carmen
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground mb-4 text-pretty">
-              Modulus provides activity analytics for open education.
+            <p className="mb-8 max-w-xl text-pretty text-lg text-gray-700 dark:text-gray-200">
+              Modulus connects Ximera's interactive textbooks to Carmen. It records how each student
+              moves through an activity and sends their score to the Carmen gradebook, so you never
+              export or re-enter grades.
             </p>
 
-            <p className="text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 text-pretty">
-              An assignment-grade database designed to track progress on Ximera assignments using
-              time-series data and latest page-state snapshots. Helping instructors understand their
-              assignments.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <Button
-                render={<LangLink lng={lng} href="/dashboard" />}
+                render={<LangLink lng={lng} href="/docs/introduction" />}
                 size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 w-full sm:w-auto"
+                className="w-full sm:w-auto"
               >
-                Get Started
+                Read how it works
               </Button>
               <Button
                 render={
@@ -54,24 +52,21 @@ export function Hero({ lng }: { lng: Locale }) {
                 }
                 variant="outlined"
                 size="lg"
-                className="w-full sm:w-auto border-border text-foreground hover:bg-secondary bg-transparent"
+                className="w-full sm:w-auto"
               >
-                Learn about Ximera
-                <ArrowRight className="ml-2 h-4 w-4" />
+                Visit Ximera
               </Button>
             </div>
 
-            {/* Additional info */}
-            <div className="mt-8 flex items-center gap-2 justify-center lg:justify-start text-sm text-muted-foreground">
-              <BookOpen className="h-4 w-4" />
-              <span>Documentation and installation instructions coming soon</span>
-            </div>
+            <p className="mt-8 flex max-w-md items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              <span>
+                Ximera activities never receive a student's email, OSU ID or Carmen grades.
+              </span>
+            </p>
           </div>
 
-          {/* Right: Animation */}
-          <div className="lg:pl-4">
-            <HeroAnimation />
-          </div>
+          <HeroFlow />
         </div>
       </Container>
     </Section>
