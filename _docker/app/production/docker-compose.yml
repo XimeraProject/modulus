@@ -1,0 +1,24 @@
+# Run the production image locally against the local Postgres
+# (./postgres/postgres.sh up -d). Use ./_docker/exec-prod.sh from the repo root:
+#
+#   ./_docker/exec-prod.sh up
+#   DEPLOYMENT_MODE=frontend JOB_QUEUE_ENABLED=false ./_docker/exec-prod.sh up
+#   DEPLOYMENT_MODE=admin ./_docker/exec-prod.sh up
+services:
+  app:
+    image: osu-modulus:app-${VERSION:-latest}
+    container_name: osu_modulus_app
+    # .env holds the committed public values; .env.local the local secrets.
+    env_file:
+      - ./.env
+      - path: ./.env.local
+        required: false
+    ports:
+      - 8000:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      DEPLOYMENT_MODE: ${DEPLOYMENT_MODE:-all-in-one}
+      JOB_QUEUE_ENABLED: ${JOB_QUEUE_ENABLED:-true}
+      # Reach the host's Postgres from inside the container.
+      POSTGRES_CONNECTION_STRING: postgres://modulus:modulus@host.docker.internal:5432/osu_modulus_dev

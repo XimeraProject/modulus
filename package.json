@@ -2,6 +2,7 @@
   "name": "osu.modulus-learning.org",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@12.21.0",
   "scripts": {
     "clean": "rm -rf node_modules .output .nitro .tanstack",
     "dev": "vite dev",

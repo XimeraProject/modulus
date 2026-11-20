@@ -30,3 +30,7 @@ keys.env
 !.env
 
 /uploads
+
+# AWS deploy settings (account IDs, ARNs) and rendered task definitions
+/_docker/aws/aws.env
+/_docker/aws/.rendered/
