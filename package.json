@@ -15,7 +15,9 @@
     "lint": "biome check --write --diagnostic-level=error",
     "lint:check": "biome check --diagnostic-level=error",
     "db:up": "./postgres/postgres.sh up -d",
-    "db:down": "./postgres/postgres.sh down"
+    "db:down": "./postgres/postgres.sh down",
+    "test:css": "node --test 'tests/css/*.test.ts'",
+    "test:css-build": "CSS_BUILD_CHECK=1 node --test 'tests/css/css-contract.test.ts'"
   },
   "engines": {
     "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
@@ -55,6 +57,7 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
     "cross-env": "^10.1.0",
+    "postcss": "^8.5.33",
     "tailwindcss": "4.3.5",
     "typescript": "^7.0.2",
     "vite": "8.3.8"

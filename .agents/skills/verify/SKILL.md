@@ -5,7 +5,7 @@ description: Use when asked to verify, check, or test a change in this repositor
 
 # Verifying a change
 
-This installation has no unit test suite. A change is verified by the checks
+The only tests are the CSS layer guard under `tests/css/` (`node:test`). A change is verified by the checks
 below, in order; stop at the first failure and report it.
 
 ## 1. Static checks
@@ -13,13 +13,22 @@ below, in order; stop at the first failure and report it.
 ```sh
 pnpm lint:check
 pnpm typecheck
+pnpm test:css
 ```
+
+`pnpm test:css` checks every stylesheet under `src/` against the CSS layer
+contract: no unlayered rules or `!important`, no `@scope` rule that can never
+match, and every `overrides` or `components` rule inside the public scope.
 
 ## 2. Production build
 
 ```sh
 pnpm build
+pnpm test:css-build
 ```
+
+`pnpm test:css-build` checks that every built stylesheet establishes the full
+Modulus layer order.
 
 The build regenerates `src/routeTree.gen.ts`. The `[EVAL]` warning from
 `gray-matter` is expected. A `failed to resolve import` error from a
