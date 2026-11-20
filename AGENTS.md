@@ -133,9 +133,11 @@ skill).
 - **The health check is `/routes/elb-status`**, not `/elb-status`.
 - **Production is AWS ECS on Graviton EC2 (arm64), not Fargate and not Fly.io.**
   Images must be `linux/arm64`; `_docker/aws/push.sh` refuses anything else.
-- **`tailwind-merge` is a workaround.** host-tanstack-start 0.11.3 imports it
-  without declaring it; remove it from `package.json` after upgrading to a
-  release with the fix.
+- **Dependency workarounds are listed here.** When a packaged module imports a
+  dependency it does not declare, the build fails with `failed to resolve
+  import`; add the dependency to this application as a workaround, list it here
+  with the version that needs it, and remove it once a release fixes it. None
+  are needed at 0.12.0.
 - **The locale set (`en`, `es`) is fixed by the host package.** English URLs
   have no prefix; Spanish ones start with `/es`.
 - **Port 5432 is shared** with the Modulus monorepo's local database; stop one

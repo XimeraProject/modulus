@@ -182,14 +182,14 @@ importers:
         specifier: ^6.8.2
         version: 6.8.2(@date-fns/tz@1.5.0)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@modulus-learning/core':
-        specifier: 0.11.3
-        version: 0.11.3(@opentelemetry/api@1.10.0)(supports-color@5.5.0)
+        specifier: 0.12.0
+        version: 0.12.0(@opentelemetry/api@1.10.0)(supports-color@5.5.0)
       '@modulus-learning/host-tanstack-start':
-        specifier: 0.11.3
-        version: 0.11.3(@date-fns/tz@1.5.0)(@google-cloud/recaptcha-enterprise@7.3.0(supports-color@5.5.0))(@opentelemetry/api@1.10.0)(@standard-schema/spec@1.1.0)(@tanstack/react-router@1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@tanstack/react-start@1.169.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rolldown@1.2.19)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0)))(@tanstack/router-core@1.171.39)(@types/react@19.3.0)(argon2@0.45.2)(bcrypt@6.0.0)(date-fns@4.4.0)(googleapis@188.0.0(supports-color@5.5.0))(nitro@3.0.261029-rc)(pg@8.23.1)(pino@10.4.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))
+        specifier: 0.12.0
+        version: 0.12.0(@date-fns/tz@1.5.0)(@google-cloud/recaptcha-enterprise@7.3.0(supports-color@5.5.0))(@opentelemetry/api@1.10.0)(@standard-schema/spec@1.1.0)(@tanstack/react-router@1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@tanstack/react-start@1.169.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rolldown@1.2.19)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0)))(@tanstack/router-core@1.171.39)(@types/react@19.3.0)(argon2@0.45.2)(bcrypt@6.0.0)(date-fns@4.4.0)(googleapis@188.0.0(supports-color@5.5.0))(nitro@3.0.261029-rc)(pg@8.23.1)(pino@10.4.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))
       '@modulus-learning/lms-canvas':
-        specifier: 0.11.3
-        version: 0.11.3
+        specifier: 0.12.0
+        version: 0.12.0
       '@tanstack/react-router':
         specifier: 1.170.46
         version: 1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -241,9 +241,6 @@ importers:
       remark-rehype:
         specifier: ^11.1.2
         version: 11.1.2
-      tailwind-merge:
-        specifier: ^3.7.0
-        version: 3.7.0
       unified:
         specifier: ^11.0.5
         version: 11.0.5
@@ -771,13 +768,13 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@modulus-learning/core@0.11.3':
-    resolution: {integrity: sha512-NahQ3YUmhbR4kHEXGwx/RXTLhOJkWrjuqSjajdQIXI2DrmQiJzAptcn0rhoU4ybPV5g7j/6KYlVGB7RTjBhtGA==}
+  '@modulus-learning/core@0.12.0':
+    resolution: {integrity: sha512-dEA15yP8uV1WYgq94lIfA6AvLWwsBrwYRpeZtPGFEVUvaiIr0xVOxVoYbIJJvWqAGvot5xHRscVL/Hr9LZsHRQ==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     hasBin: true
 
-  '@modulus-learning/host-tanstack-start@0.11.3':
-    resolution: {integrity: sha512-SddDuQpuezbC4FesDbnhytoZIO6tePCmjfBx5xoK8sg6nsehsHYEaaMZXrRWACjVkrL3U9a8g0qZyzPJ5JU27w==}
+  '@modulus-learning/host-tanstack-start@0.12.0':
+    resolution: {integrity: sha512-JeUKXaCpGuwZuEFWo+19siGoJ8u5xCpGo+IPg5/H2yqk7Nt4HHvtx5/IYufvKCNx/aFxO3AdjI8yrxio6PpqLw==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     peerDependencies:
       '@google-cloud/recaptcha-enterprise': ^7.3.0
@@ -794,12 +791,12 @@ packages:
       react-dom: ^19.3.0
       vite: ^8.3.0
 
-  '@modulus-learning/lms-canvas@0.11.3':
-    resolution: {integrity: sha512-ZybaJIRFAdyeR0gKWkr5dpRQgj+iICKXvabnbB/KIfJ4egoj5zSePuZlKwBHSkkxh5Xd/ojkH6hkvvcU4aK3Bw==}
+  '@modulus-learning/lms-canvas@0.12.0':
+    resolution: {integrity: sha512-2RftuqQkBkRLY86TpPjjmWTLxThJNV9jdFh8HuahR+4q/Ba77ndkaZ5gc7TCXXiVLlbAILtzX6Nnt0v9+tXXBw==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
 
-  '@modulus-learning/lti@0.11.3':
-    resolution: {integrity: sha512-mzijoW10X3YKnbuR58PQBBZCRHtu4S/jBl6NoKBdqp1jZjJG644tjQ/WMquL4F+fn0XJEDuczKk1OgKoW+GA2w==}
+  '@modulus-learning/lti@0.12.0':
+    resolution: {integrity: sha512-Q/e+HFIgUMtMmn9WumyXaLJX6xPUwzbnCz2/lxsveYUq1Yd+H/puJoTn89uNskw3QQtNjAHnzztUsmXjysqo8g==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
 
   '@napi-rs/wasm-runtime@1.2.6':
@@ -4291,10 +4288,10 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@modulus-learning/core@0.11.3(@opentelemetry/api@1.10.0)(supports-color@5.5.0)':
+  '@modulus-learning/core@0.12.0(@opentelemetry/api@1.10.0)(supports-color@5.5.0)':
     dependencies:
       '@infonomic/schemas': 2.4.0
-      '@modulus-learning/lti': 0.11.3
+      '@modulus-learning/lti': 0.12.0
       argon2: 0.45.2
       dotenv: 18.0.10
       drizzle-orm: 0.45.4(@opentelemetry/api@1.10.0)(pg@8.23.1)
@@ -4341,7 +4338,7 @@ snapshots:
       - sqlite3
       - supports-color
 
-  '@modulus-learning/host-tanstack-start@0.11.3(@date-fns/tz@1.5.0)(@google-cloud/recaptcha-enterprise@7.3.0(supports-color@5.5.0))(@opentelemetry/api@1.10.0)(@standard-schema/spec@1.1.0)(@tanstack/react-router@1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@tanstack/react-start@1.169.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rolldown@1.2.19)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0)))(@tanstack/router-core@1.171.39)(@types/react@19.3.0)(argon2@0.45.2)(bcrypt@6.0.0)(date-fns@4.4.0)(googleapis@188.0.0(supports-color@5.5.0))(nitro@3.0.261029-rc)(pg@8.23.1)(pino@10.4.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))':
+  '@modulus-learning/host-tanstack-start@0.12.0(@date-fns/tz@1.5.0)(@google-cloud/recaptcha-enterprise@7.3.0(supports-color@5.5.0))(@opentelemetry/api@1.10.0)(@standard-schema/spec@1.1.0)(@tanstack/react-router@1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@tanstack/react-start@1.169.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rolldown@1.2.19)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0)))(@tanstack/router-core@1.171.39)(@types/react@19.3.0)(argon2@0.45.2)(bcrypt@6.0.0)(date-fns@4.4.0)(googleapis@188.0.0(supports-color@5.5.0))(nitro@3.0.261029-rc)(pg@8.23.1)(pino@10.4.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))':
     dependencies:
       '@aws-sdk/client-s3': 3.1172.0
       '@base-ui/react': 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -4355,8 +4352,8 @@ snapshots:
       '@infonomic/crypto': 2.3.0
       '@infonomic/schemas': 2.4.0
       '@infonomic/uikit': 6.8.2(@date-fns/tz@1.5.0)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@modulus-learning/core': 0.11.3(@opentelemetry/api@1.10.0)(supports-color@5.5.0)
-      '@modulus-learning/lti': 0.11.3
+      '@modulus-learning/core': 0.12.0(@opentelemetry/api@1.10.0)(supports-color@5.5.0)
+      '@modulus-learning/lti': 0.12.0
       '@panva/hkdf': 1.2.1
       '@tanstack/react-router': 1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@tanstack/react-start': 1.169.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rolldown@1.2.19)(supports-color@5.5.0)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))
@@ -4397,6 +4394,7 @@ snapshots:
       remark-rehype: 11.1.2
       serialize-error: 13.1.0
       slugify: 1.6.9
+      tailwind-merge: 3.7.0
       undici: 8.12.4
       unified: 11.0.5
       unique-names-generator: 4.7.1
@@ -4467,12 +4465,12 @@ snapshots:
       - vest
       - yup
 
-  '@modulus-learning/lms-canvas@0.11.3':
+  '@modulus-learning/lms-canvas@0.12.0':
     dependencies:
-      '@modulus-learning/lti': 0.11.3
+      '@modulus-learning/lti': 0.12.0
       zod: 4.6.7
 
-  '@modulus-learning/lti@0.11.3':
+  '@modulus-learning/lti@0.12.0':
     dependencies:
       zod: 4.6.7
 

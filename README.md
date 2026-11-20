@@ -114,8 +114,8 @@ running it locally, and the build, push, migrate, and deploy scripts.
 4. Deploy. The deploy script runs `modulus db upgrade` before the new image
    serves traffic.
 
-`tailwind-merge` is listed here only because host-tanstack-start 0.11.3 omits
-it from its dependencies. Remove it after upgrading to a release with the fix.
+If a release fixes a dependency workaround listed in `AGENTS.md`, remove it as
+part of the upgrade.
 
 ## Commands
 

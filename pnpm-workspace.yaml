@@ -10,3 +10,8 @@ allowBuilds:
   argon2: true
   bcrypt: true
   protobufjs: true
+minimumReleaseAgeExclude:
+  - '@modulus-learning/core@0.12.0'
+  - '@modulus-learning/host-tanstack-start@0.12.0'
+  - '@modulus-learning/lms-canvas@0.12.0'
+  - '@modulus-learning/lti@0.12.0'

@@ -35,9 +35,10 @@ The source and release notes live in
 6. **Environment.** Add new variables to `.env.example`, to
    `_docker/aws/render-task-definitions.mjs` (environment or secret, per mode),
    and tell the user which ones `.env.local` and the production secret need.
-7. **Workarounds.** Check each workaround listed under Things That Bite in
-   `AGENTS.md` (for example the `tailwind-merge` dependency). Remove those the
-   release fixes, and update `AGENTS.md` and `README.md` to match.
+7. **Workarounds.** Check each dependency workaround listed under Things That
+   Bite in `AGENTS.md`. Remove those the release fixes — the dependency from
+   `package.json` and its entry from `AGENTS.md` — and confirm the build still
+   resolves without it.
 8. **Database.** Run `pnpm exec modulus db upgrade --env-file .env.local`
    against the local database, then `db status`.
 9. **Verify** by following the `verify` skill, including the boot checks in all
