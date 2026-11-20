@@ -3,13 +3,13 @@
  * §4.2). Ported from infonomic.io `apps/webapp/vite/css-layer-audit.ts`; `auditPublicScope` is
  * this installation's addition.
  */
-import postcss, { type AtRule, type Declaration } from 'postcss'
+import postcss, { type AtRule, type ChildNode, type Declaration, type Node } from 'postcss'
 
 export type LayerIssue = {
   line: number
   selector: string
   property: string
-  kind: 'unlayered' | 'important' | 'unscoped'
+  kind: 'unlayered' | 'important' | 'unscoped' | 'layer' | 'import' | 'theme'
 }
 
 /** Inspect declarations, not text: grouping rules and nesting do not create layers. */
@@ -104,33 +104,120 @@ export function hasBuiltLayerOrder(css: string, statement: string): boolean {
 /** The one scope installation overrides and components may live under. */
 export const PUBLIC_SCOPE = '(:root[data-theme-context="public"])'
 
+/** The dotted layer path of a node, from its `@layer` ancestors (outermost first). */
+function layerPath(node: ChildNode | AtRule | Declaration): string {
+  const names: string[] = []
+  let parent: Node | undefined = node.parent as Node | undefined
+  for (; parent && parent.type !== 'root'; parent = parent.parent as Node | undefined) {
+    if (parent.type === 'atrule' && (parent as AtRule).name === 'layer') {
+      names.unshift((parent as AtRule).params.trim())
+    }
+  }
+  return names.join('.')
+}
+
 /**
  * Being layered is not enough: an `overrides` or `components` rule without the public scope
- * reaches the dashboard and admin area too. Every declaration under those layers needs an
- * `@scope` ancestor rooted at the public theme context.
+ * reaches the dashboard and admin area too. Every declaration or `@apply` under those layers,
+ * including their sublayers, needs an `@scope` ancestor rooted at the public theme context.
  */
 export function auditPublicScope(css: string): LayerIssue[] {
   const issues: LayerIssue[] = []
-  postcss.parse(css).walkDecls((decl) => {
-    let installationLayer = false
+  function inspect(node: AtRule | Declaration, property: string) {
+    if (!/^(?:overrides|components)(?:\.|$)/.test(layerPath(node))) return
     let publicScope = false
     let selector = ''
-    for (let parent = decl.parent; parent && parent.type !== 'root'; parent = parent.parent) {
+    for (let parent = node.parent; parent && parent.type !== 'root'; parent = parent.parent) {
       if (parent.type === 'rule' && !selector) selector = parent.selector
-      if (parent.type !== 'atrule') continue
-      if (parent.name === 'layer' && /^(?:overrides|components)$/.test(parent.params.trim())) {
-        installationLayer = true
+      if (
+        parent.type === 'atrule' &&
+        parent.name === 'scope' &&
+        parent.params.trim() === PUBLIC_SCOPE
+      ) {
+        publicScope = true
       }
-      if (parent.name === 'scope' && parent.params.trim() === PUBLIC_SCOPE) publicScope = true
     }
-    if (installationLayer && !publicScope) {
-      issues.push({
-        line: decl.source?.start?.line ?? 0,
-        selector,
-        property: decl.prop,
-        kind: 'unscoped',
-      })
+    if (!publicScope) {
+      issues.push({ line: node.source?.start?.line ?? 0, selector, property, kind: 'unscoped' })
     }
+  }
+  const root = postcss.parse(css)
+  root.walkDecls((decl) => inspect(decl, decl.prop))
+  root.walkAtRules('apply', (rule) => inspect(rule, '@apply'))
+  return issues
+}
+
+const atIssue = (rule: AtRule, kind: LayerIssue['kind']): LayerIssue => ({
+  line: rule.source?.start?.line ?? 0,
+  selector: `@${rule.name} ${rule.params}`,
+  property: '',
+  kind,
+})
+
+/**
+ * Installation CSS lives only in `overrides` and `components` (and their sublayers). Any other
+ * name either reaches into a package layer or, if it is not in the Modulus order, lands above
+ * `utilities`. Tailwind's own files may be imported into `theme` and `utilities`.
+ */
+export function auditLayerNames(css: string): LayerIssue[] {
+  const issues: LayerIssue[] = []
+  const allowed = (name: string) => /^(?:overrides|components)(?:\.|$)/.test(name)
+  postcss.parse(css).walkAtRules((rule) => {
+    if (rule.name === 'layer') {
+      const outer = layerPath(rule)
+      for (const name of rule.params.split(',').map((value) => value.trim())) {
+        if (!allowed(outer ? `${outer}.${name}` : name)) issues.push(atIssue(rule, 'layer'))
+      }
+    }
+    if (rule.name === 'import') {
+      const layer = rule.params.match(/\blayer\(([^)]*)\)/)?.[1]?.trim()
+      if (layer === undefined || allowed(layer)) return
+      const tailwind = /^["']tailwindcss\/(?:theme|utilities)\.css["']/.test(rule.params.trim())
+      if (!(tailwind && /^(?:theme|utilities)$/.test(layer))) issues.push(atIssue(rule, 'layer'))
+    }
+  })
+  return issues
+}
+
+/** The only stylesheets an installation file may import by name; relative imports are scanned. */
+export const ALLOWED_IMPORTS: ReadonlySet<string> = new Set([
+  '@modulus-learning/host-tanstack-start/styles/modulus.css',
+  '@modulus-learning/host-tanstack-start/styles/tailwind.css',
+  'tailwindcss/theme.css',
+  'tailwindcss/utilities.css',
+])
+
+/**
+ * A stylesheet imported from a package is never scanned, so an unlayered or unscoped one would
+ * reach every area. Only the package and Tailwind entries may be imported by name.
+ */
+export function auditImports(css: string): LayerIssue[] {
+  const issues: LayerIssue[] = []
+  postcss.parse(css).walkAtRules('import', (rule) => {
+    const source = rule.params.match(/^(?:url\()?\s*["']([^"']+)["']/)?.[1] ?? rule.params
+    if (source.startsWith('./') || source.startsWith('../')) return
+    if (!ALLOWED_IMPORTS.has(source)) issues.push(atIssue(rule, 'import'))
+  })
+  return issues
+}
+
+/**
+ * Tailwind theme variables are global, so a top-level `@theme` may only add names: redefining
+ * or resetting a shared one changes utilities in the dashboard and admin area too.
+ */
+export function auditTheme(css: string, shared: ReadonlySet<string>): LayerIssue[] {
+  const issues: LayerIssue[] = []
+  postcss.parse(css).walkAtRules('theme', (rule) => {
+    rule.walkDecls((decl) => {
+      if (decl.prop.includes('*') || shared.has(decl.prop)) {
+        issues.push({
+          line: decl.source?.start?.line ?? 0,
+          selector: '@theme',
+          property: decl.prop,
+          kind: 'theme',
+        })
+      }
+    })
   })
   return issues
 }

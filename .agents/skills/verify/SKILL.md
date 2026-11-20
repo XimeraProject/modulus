@@ -18,7 +18,9 @@ pnpm test:css
 
 `pnpm test:css` checks every stylesheet under `src/` against the CSS layer
 contract: no unlayered rules or `!important`, no `@scope` rule that can never
-match, and every `overrides` or `components` rule inside the public scope.
+match, only the `overrides` and `components` layers, every rule in them inside
+the public scope, no stylesheet imported by name except the package and
+Tailwind entries, and a `@theme` that only adds names.
 
 ## 2. Production build
 
