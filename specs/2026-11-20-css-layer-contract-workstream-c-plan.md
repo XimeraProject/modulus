@@ -23,12 +23,14 @@ Task 2 can be built before then: it depends only on PostCSS.
 
 Workstream B chooses the exact export paths. Read its upgrade notes in upstream `docs/` and fill in this table before Task 1; every later task refers to these names, not to guessed paths.
 
-| Name in this plan | What it is (spec §6 step 4) |
-|---|---|
-| `PKG_DEFAULT_CSS` | The default `global.css` an installation with no CSS of its own imports |
-| `PKG_CSS` | Kit and Modulus CSS, without Tailwind |
-| `PKG_TAILWIND` | The package's Tailwind `@theme`, `@source`, `dark` custom variant and `container` utility |
-| `MODULUS_LAYER_ORDER` | The exported layer-order statement (string), and the module it is exported from |
+| Name in this plan | What it is (spec §6 step 4) | 0.13.0 value |
+|---|---|---|
+| `PKG_DEFAULT_CSS` | The default `global.css` an installation with no CSS of its own imports | `@modulus-learning/host-tanstack-start/styles.css` |
+| `PKG_CSS` | Kit and Modulus CSS, without Tailwind | `@modulus-learning/host-tanstack-start/styles/modulus.css` |
+| `PKG_TAILWIND` | The package's Tailwind `@theme`, `@source`, `dark` custom variant and `container` utility | `@modulus-learning/host-tanstack-start/styles/tailwind.css` (imports no Tailwind files) |
+| `MODULUS_LAYER_ORDER` | The exported layer-order statement (string), and the module it is exported from | `MODULUS_LAYER_ORDER` from `@modulus-learning/host-tanstack-start/css-layers` (resolved through the package's `./*` export) |
+
+Filled from upstream `docs/26-styling-and-themes.md` at 0.13.0. The released order starts with Tailwind's `properties` layer, ahead of `base`.
 
 If any of the four is missing from the release, stop and report it: it is a workstream B gap, not something to work around here.
 
@@ -214,9 +216,9 @@ git commit -m "test: added the css layer contract guard and wired it into verify
 - Consumes: `PKG_CSS`, `PKG_TAILWIND`, `MODULUS_LAYER_ORDER`; the guard from Task 2.
 - Produces: `src/ui/styles/global.css` as the only stylesheet the app imports; `theme-public.css` and `overrides.css` as the files Task 4 fills.
 
-- [ ] **Step 1: Write `global.css`**, imports in this order: `PKG_CSS`, `./theme-public.css`, `./overrides.css`, `./tailwind.css`, `./app.css`. A header comment says layer order comes from the package (head statement and PostCSS plugin), so this file declares none.
+- [ ] **Step 1: Write `global.css`**, imports in this order: `PKG_CSS`, `./theme-public.css`, `./overrides.css`, `./tailwind.css`, `./app.css`. A header comment says layer order comes from the package (head statement and the `modulus()` preset's PostCSS plugin, which prepends `MODULUS_LAYER_ORDER` to every stylesheet), so this file declares none; the build check in Task 2 proves it.
 
-- [ ] **Step 2: Write `tailwind.css`**: import `PKG_TAILWIND`; a top-level `@theme` adding `--color-scarlet-{25…950}` and `--color-osu-gray-{25…950}`, each set to `var(--scarlet-N)` / `var(--osu-gray-N)` (the ramps are defined in Task 4, on the public scope only, so these utilities resolve only on public pages, which is the only place OSU markup appears).
+- [ ] **Step 2: Write `tailwind.css`**: import `tailwindcss/theme.css layer(theme)`, then `tailwindcss/utilities.css layer(utilities)`, then `PKG_TAILWIND` (no preflight); after the package import (its `@theme` resets the font and breakpoint namespaces), a top-level `@theme` adding `--color-scarlet-{25…950}` and `--color-osu-gray-{25…950}`, each set to `var(--scarlet-N)` / `var(--osu-gray-N)` (the ramps are defined in Task 4, on the public scope only, so these utilities resolve only on public pages, which is the only place OSU markup appears).
 
 - [ ] **Step 3: Move the home glow**
 
