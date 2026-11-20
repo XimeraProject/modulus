@@ -179,8 +179,8 @@ importers:
         specifier: ^7.3.0
         version: 7.3.0(supports-color@5.5.0)
       '@infonomic/uikit':
-        specifier: ^6.9.0
-        version: 6.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(postcss@8.5.33)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: ^6.9.1
+        version: 6.9.1(@date-fns/tz@1.5.0)(@types/react@19.3.0)(postcss@8.5.33)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@modulus-learning/core':
         specifier: 0.13.0
         version: 0.13.0(@opentelemetry/api@1.10.0)(supports-color@5.5.0)
@@ -698,8 +698,8 @@ packages:
   '@infonomic/schemas@2.4.0':
     resolution: {integrity: sha512-FFt69fDyhYdNiWabxUq/cBCsvenh1OVkj/ZrbjmGhPGkrDTY7N20KqysC46mFFmUzrTnLfMRAyy2f7sT1ZScwg==}
 
-  '@infonomic/uikit@6.9.0':
-    resolution: {integrity: sha512-EXElSnc1oFgEyS/tyVBHhCsOl3QAIHUFMTmbr07qXp3QDcrlbvThIfXPS14RBL949jAOkxyTG/hTf33z7Udyug==}
+  '@infonomic/uikit@6.9.1':
+    resolution: {integrity: sha512-VT/2BMSceINGwLDBeCmvdQy7InokMsRGD4wTgu8Ffhk9JMBm+FK7Q23o4KjQWe5XhJEb6tn1TF+TqNXXDBrAPQ==}
     peerDependencies:
       postcss: ^8.4.0
       react: ^19.0.0
@@ -4065,7 +4065,7 @@ snapshots:
       dotenv: 17.4.2
       zod: 4.6.7
 
-  '@infonomic/uikit@6.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(postcss@8.5.33)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@infonomic/uikit@6.9.1(@date-fns/tz@1.5.0)(@types/react@19.3.0)(postcss@8.5.33)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@base-ui/react': 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       clsx: 2.1.1
@@ -4169,7 +4169,7 @@ snapshots:
       '@hookform/resolvers': 7.0.7(@standard-schema/spec@1.1.0)(react-hook-form@8.0.0-beta.5(@types/react@19.3.0)(react@19.3.1))(zod@4.6.7)
       '@infonomic/crypto': 2.3.0
       '@infonomic/schemas': 2.4.0
-      '@infonomic/uikit': 6.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(postcss@8.5.33)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@infonomic/uikit': 6.9.1(@date-fns/tz@1.5.0)(@types/react@19.3.0)(postcss@8.5.33)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@modulus-learning/core': 0.13.0(@opentelemetry/api@1.10.0)(supports-color@5.5.0)
       '@modulus-learning/lti': 0.13.0
       '@panva/hkdf': 1.2.1

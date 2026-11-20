@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@google-cloud/recaptcha-enterprise": "^7.3.0",
-    "@infonomic/uikit": "^6.9.0",
+    "@infonomic/uikit": "^6.9.1",
     "@modulus-learning/core": "0.13.0",
     "@modulus-learning/host-tanstack-start": "0.13.0",
     "@modulus-learning/lms-canvas": "0.13.0",

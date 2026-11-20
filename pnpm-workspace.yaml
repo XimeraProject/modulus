@@ -15,7 +15,7 @@ minimumReleaseAgeExclude:
   - '@modulus-learning/host-tanstack-start@0.13.0'
   - '@modulus-learning/lms-canvas@0.13.0'
   - '@modulus-learning/lti@0.13.0'
-  - '@infonomic/uikit@6.9.0'
+  - '@infonomic/uikit@6.9.1'
   - '@aws-sdk/client-s3@3.1173.0'
   - lucide-react@1.77.0
   - nodemailer@10.6.1
