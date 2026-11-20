@@ -38,6 +38,28 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  // Workaround (host-tanstack-start 0.13.0, dev only): TanStack Start excludes the host package
+  // from dependency pre-bundling, and pnpm does not hoist the host's own client dependencies to
+  // the project root, so Vite serves them unbundled and any CommonJS module beneath them fails in
+  // the browser ("does not provide an export named …": use-sync-external-store under
+  // @base-ui/react and recharts, classnames under react-share). Pre-bundle the host's client
+  // dependencies through the host package, in one pass, so shared code (Base UI, dnd-kit) stays
+  // a single module instance. Remove once the modulus() preset does this itself
+  // (Modulus-Learning/app.modulus-learning.org#16).
+  optimizeDeps: {
+    include: [
+      '@base-ui/react/navigation-menu',
+      'recharts',
+      'react-share',
+      'react-swipeable',
+      'react-hook-form',
+      '@hookform/resolvers/zod',
+      '@dnd-kit/core',
+      '@dnd-kit/sortable',
+      'clsx',
+      'tailwind-merge',
+    ].map((dependency) => `@modulus-learning/host-tanstack-start > ${dependency}`),
+  },
   // Tailwind runs through @tailwindcss/vite; no PostCSS config is picked up.
   css: { postcss: { plugins: [] } },
   // `public/assets/` already exists, so hashed build assets go to `/_build/`.

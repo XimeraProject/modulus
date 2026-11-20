@@ -142,8 +142,14 @@ lint, typecheck, the guard, build, and booting the build (the `verify` skill).
 - **Dependency workarounds are listed here.** When a packaged module imports a
   dependency it does not declare, the build fails with `failed to resolve
   import`; add the dependency to this application as a workaround, list it here
-  with the version that needs it, and remove it once a release fixes it. None
-  are needed at 0.13.0.
+  with the version that needs it, and remove it once a release fixes it. At
+  0.13.0 one is needed, in dev only: `vite.config.ts` pre-bundles the host
+  package's client dependencies (`optimizeDeps.include`), because Start keeps
+  the host package out of pre-bundling and pnpm does not hoist its
+  dependencies, so CommonJS beneath them (`use-sync-external-store`,
+  `classnames`) fails in the browser with "does not provide an export named …"
+  (first seen as the admin area failing to load after sign-in). Upstream:
+  Modulus-Learning/app.modulus-learning.org#16.
 - **OSU CSS must never reach the packaged areas.** Brand tokens and restyles go
   in `@layer overrides`, OSU component CSS in `@layer components`, both inside
   `@scope (:root[data-theme-context="public"])`; inside a scope write `:scope`
