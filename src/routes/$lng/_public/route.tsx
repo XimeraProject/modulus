@@ -8,11 +8,13 @@ import { UserSessionProvider } from '@modulus-learning/host-tanstack-start/modul
 import { getUserSessionFn } from '@modulus-learning/host-tanstack-start/modules/app/session/session-state'
 import { AppBarFront } from '@modulus-learning/host-tanstack-start/ui/components/app-bar-front/index'
 import { NotFoundView } from '@modulus-learning/host-tanstack-start/ui/components/not-found-view'
-import { SiteFooter } from '@modulus-learning/host-tanstack-start/ui/components/site-footer'
+
+import { SiteFooter } from '@/ui/components/site-footer'
 
 /**
- * Public layout (`/`, `/about`, `/docs`). Verification-only session for the
- * app bar; `SessionRecovery` renews in the browser when the access token has
+ * Public layout (`/`, `/docs`, and the markdown pages `/about`,
+ * `/privacy-policy`, `/terms-of-use`, `/cookies`). Verification-only session
+ * for the app bar; `SessionRecovery` renews in the browser when the access token has
  * just expired, then re-runs the loaders (spec: Authentication And Sessions).
  */
 export const Route = createFileRoute('/$lng/_public')({

@@ -86,9 +86,11 @@ Every mode answers `GET /routes/elb-status` with its mode and whether jobs run.
 | --- | --- |
 | `src/server.ts`, `src/start.ts`, `src/router.tsx` | Entry files; each is one call into the host package. |
 | `src/routes/` | One file per route, each calling a packaged factory. Keep the paths under `src/routes/routes/` fixed: Canvas registrations and activity pages call those URLs. |
-| `src/routes/$lng/_public/` | This installation's public pages (home, about, docs). |
-| `src/modules/` | Code for the public pages: home components and the docs renderer. |
+| `src/routes/$lng/_public/` | This installation's public pages (home, docs, about, and the legal pages). |
+| `src/modules/` | The docs renderer and the markdown pages registry. |
+| `src/ui/` | Site-wide page furniture and chrome: the hero, branding, and site footer under `src/ui/components/`. |
 | `src/content/docs/` | Installation docs, rendered at `/docs`. `NN-` prefixes set the order; front matter needs a `title`. |
+| `src/content/pages/` | Root-level pages (`/about`, `/privacy-policy`, `/terms-of-use`, `/cookies`). The filename is the path; front matter needs a `title`. |
 | `public/` | Favicons, fonts, and static assets. |
 | `email-templates/` | Transactional email templates. |
 | `postgres/` | The local database. |

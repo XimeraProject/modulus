@@ -28,6 +28,9 @@ import { Route as LngFormsSignUpRouteImport } from './routes/$lng/_forms/sign-up
 import { Route as LngPublicIndexRouteImport } from './routes/$lng/_public/index'
 import { Route as LngPublicSplatRouteImport } from './routes/$lng/_public/$'
 import { Route as LngPublicAboutRouteImport } from './routes/$lng/_public/about'
+import { Route as LngPublicCookiesRouteImport } from './routes/$lng/_public/cookies'
+import { Route as LngPublicPrivacyPolicyRouteImport } from './routes/$lng/_public/privacy-policy'
+import { Route as LngPublicTermsOfUseRouteImport } from './routes/$lng/_public/terms-of-use'
 import { Route as LtiLaunchActivity_idRouteImport } from './routes/lti/launch/$activity_id'
 import { Route as RoutesAgentActivityRouteImport } from './routes/routes/agent/activity'
 import { Route as RoutesAgentAuthorizeRouteImport } from './routes/routes/agent/authorize'
@@ -171,6 +174,21 @@ const LngPublicSplatRoute = LngPublicSplatRouteImport.update({
 const LngPublicAboutRoute = LngPublicAboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => LngPublicRouteRoute,
+} as any)
+const LngPublicCookiesRoute = LngPublicCookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => LngPublicRouteRoute,
+} as any)
+const LngPublicPrivacyPolicyRoute = LngPublicPrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => LngPublicRouteRoute,
+} as any)
+const LngPublicTermsOfUseRoute = LngPublicTermsOfUseRouteImport.update({
+  id: '/terms-of-use',
+  path: '/terms-of-use',
   getParentRoute: () => LngPublicRouteRoute,
 } as any)
 const LtiLaunchActivity_idRoute = LtiLaunchActivity_idRouteImport.update({
@@ -491,6 +509,9 @@ export interface FileRoutesByFullPath {
   '/$lng/sign-up': typeof LngFormsSignUpRoute
   '/$lng/$': typeof LngPublicSplatRoute
   '/$lng/about': typeof LngPublicAboutRoute
+  '/$lng/cookies': typeof LngPublicCookiesRoute
+  '/$lng/privacy-policy': typeof LngPublicPrivacyPolicyRoute
+  '/$lng/terms-of-use': typeof LngPublicTermsOfUseRoute
   '/lti/launch/$activity_id': typeof LtiLaunchActivity_idRoute
   '/routes/agent/activity': typeof RoutesAgentActivityRoute
   '/routes/agent/authorize': typeof RoutesAgentAuthorizeRoute
@@ -561,6 +582,9 @@ export interface FileRoutesByTo {
   '/$lng/sign-up': typeof LngFormsSignUpRoute
   '/$lng/$': typeof LngPublicSplatRoute
   '/$lng/about': typeof LngPublicAboutRoute
+  '/$lng/cookies': typeof LngPublicCookiesRoute
+  '/$lng/privacy-policy': typeof LngPublicPrivacyPolicyRoute
+  '/$lng/terms-of-use': typeof LngPublicTermsOfUseRoute
   '/lti/launch/$activity_id': typeof LtiLaunchActivity_idRoute
   '/routes/agent/activity': typeof RoutesAgentActivityRoute
   '/routes/agent/authorize': typeof RoutesAgentAuthorizeRoute
@@ -634,6 +658,9 @@ export interface FileRoutesById {
   '/$lng/_forms/sign-up': typeof LngFormsSignUpRoute
   '/$lng/_public/$': typeof LngPublicSplatRoute
   '/$lng/_public/about': typeof LngPublicAboutRoute
+  '/$lng/_public/cookies': typeof LngPublicCookiesRoute
+  '/$lng/_public/privacy-policy': typeof LngPublicPrivacyPolicyRoute
+  '/$lng/_public/terms-of-use': typeof LngPublicTermsOfUseRoute
   '/lti/launch/$activity_id': typeof LtiLaunchActivity_idRoute
   '/routes/agent/activity': typeof RoutesAgentActivityRoute
   '/routes/agent/authorize': typeof RoutesAgentAuthorizeRoute
@@ -706,6 +733,9 @@ export interface FileRouteTypes {
     | '/$lng/sign-up'
     | '/$lng/$'
     | '/$lng/about'
+    | '/$lng/cookies'
+    | '/$lng/privacy-policy'
+    | '/$lng/terms-of-use'
     | '/lti/launch/$activity_id'
     | '/routes/agent/activity'
     | '/routes/agent/authorize'
@@ -776,6 +806,9 @@ export interface FileRouteTypes {
     | '/$lng/sign-up'
     | '/$lng/$'
     | '/$lng/about'
+    | '/$lng/cookies'
+    | '/$lng/privacy-policy'
+    | '/$lng/terms-of-use'
     | '/lti/launch/$activity_id'
     | '/routes/agent/activity'
     | '/routes/agent/authorize'
@@ -848,6 +881,9 @@ export interface FileRouteTypes {
     | '/$lng/_forms/sign-up'
     | '/$lng/_public/$'
     | '/$lng/_public/about'
+    | '/$lng/_public/cookies'
+    | '/$lng/_public/privacy-policy'
+    | '/$lng/_public/terms-of-use'
     | '/lti/launch/$activity_id'
     | '/routes/agent/activity'
     | '/routes/agent/authorize'
@@ -1057,6 +1093,27 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/$lng/about'
       preLoaderRoute: typeof LngPublicAboutRouteImport
+      parentRoute: typeof LngPublicRouteRoute
+    }
+    '/$lng/_public/cookies': {
+      id: '/$lng/_public/cookies'
+      path: '/cookies'
+      fullPath: '/$lng/cookies'
+      preLoaderRoute: typeof LngPublicCookiesRouteImport
+      parentRoute: typeof LngPublicRouteRoute
+    }
+    '/$lng/_public/privacy-policy': {
+      id: '/$lng/_public/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/$lng/privacy-policy'
+      preLoaderRoute: typeof LngPublicPrivacyPolicyRouteImport
+      parentRoute: typeof LngPublicRouteRoute
+    }
+    '/$lng/_public/terms-of-use': {
+      id: '/$lng/_public/terms-of-use'
+      path: '/terms-of-use'
+      fullPath: '/$lng/terms-of-use'
+      preLoaderRoute: typeof LngPublicTermsOfUseRouteImport
       parentRoute: typeof LngPublicRouteRoute
     }
     '/lti/launch/$activity_id': {
@@ -1586,6 +1643,9 @@ const LngFormsRouteRouteWithChildren = LngFormsRouteRoute._addFileChildren(
 interface LngPublicRouteRouteChildren {
   LngPublicSplatRoute: typeof LngPublicSplatRoute
   LngPublicAboutRoute: typeof LngPublicAboutRoute
+  LngPublicCookiesRoute: typeof LngPublicCookiesRoute
+  LngPublicPrivacyPolicyRoute: typeof LngPublicPrivacyPolicyRoute
+  LngPublicTermsOfUseRoute: typeof LngPublicTermsOfUseRoute
   LngPublicIndexRoute: typeof LngPublicIndexRoute
   LngPublicDocsSlugRoute: typeof LngPublicDocsSlugRoute
   LngPublicDocsIndexRoute: typeof LngPublicDocsIndexRoute
@@ -1594,6 +1654,9 @@ interface LngPublicRouteRouteChildren {
 const LngPublicRouteRouteChildren: LngPublicRouteRouteChildren = {
   LngPublicSplatRoute: LngPublicSplatRoute,
   LngPublicAboutRoute: LngPublicAboutRoute,
+  LngPublicCookiesRoute: LngPublicCookiesRoute,
+  LngPublicPrivacyPolicyRoute: LngPublicPrivacyPolicyRoute,
+  LngPublicTermsOfUseRoute: LngPublicTermsOfUseRoute,
   LngPublicIndexRoute: LngPublicIndexRoute,
   LngPublicDocsSlugRoute: LngPublicDocsSlugRoute,
   LngPublicDocsIndexRoute: LngPublicDocsIndexRoute,

@@ -35,7 +35,9 @@ A single pnpm package (not a monorepo). Node 26 locally, pnpm 12 (pinned by
 | `src/server.ts`, `src/start.ts`, `src/router.tsx`, `src/client.tsx` | Entry files; each is one call into `@modulus-learning/host-tanstack-start`. |
 | `src/routes/` | One file per route, each calling a packaged route factory, plus literal `createFileRoute` server routes under `src/routes/routes/`. |
 | `src/routes/$lng/_public/` | This installation's public pages: home, about, docs. |
-| `src/modules/` | Installation code for the public pages: home components and the docs renderer. |
+| `src/modules/` | Feature modules: the docs renderer (`docs/`) and the markdown pages registry (`pages/`). |
+| `src/ui/` | Site-wide page furniture and chrome (`src/ui/components/`, `src/ui/styles/`, …): the home hero, branding, and the local site footer. |
+| `src/content/pages/` | Markdown for the root-level pages (`/about`, `/privacy-policy`, `/terms-of-use`, `/cookies`). |
 | `src/content/docs/` | Installation docs, rendered at `/docs`. |
 | `public/`, `email-templates/` | Static assets and transactional email templates. |
 | `postgres/` | Local PostgreSQL 18 via docker compose. |
