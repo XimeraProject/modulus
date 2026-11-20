@@ -1,208 +1,137 @@
-Welcome to your new TanStack Start app!
+# Modulus at OSU
 
-# Getting Started
+The Ohio State University installation of [Modulus](https://modulus-learning.org/),
+the LTI 1.3 tool that connects Canvas (Carmen) to Ximera activities. Instrumented
+activity pages report progress to Modulus, which passes scores back to Canvas
+over LTI Assignment and Grade Services.
 
-To run this application:
+This repository is a [TanStack Start](https://tanstack.com/start) application
+built from the published Modulus packages. It owns this installation's
+configuration, public pages, docs content, branding, and deployment; the
+product itself (admin and learner UI, LTI, agent endpoints, data access) comes
+from the packages.
 
-```bash
+| Package | Role here |
+| --- | --- |
+| `@modulus-learning/core` | Business logic, data access, and the `modulus` command (database, admins, keys). |
+| `@modulus-learning/host-tanstack-start` | Route factories, server functions, UI, entry helpers, Vite preset, styles. |
+| `@modulus-learning/lms-canvas` | The Canvas adapter, passed to core in `src/server.ts`. |
+
+The Modulus packages release in lockstep: keep every `@modulus-learning/*`
+dependency on the same version.
+
+## Requirements
+
+- Node `^22.18.0 || ^24.11.0 || >=26.0.0` and pnpm 12 (pinned by `packageManager`).
+- Docker, for the local PostgreSQL 18 database.
+
+## Local Development
+
+```sh
 pnpm install
-pnpm dev
+cp .env.example .env.local          # then fill in the secrets
+pnpm db:up                          # PostgreSQL 18 on 5432, database osu_modulus_dev
+pnpm exec modulus db init --env-file .env.local
+pnpm exec modulus admin create --env-file .env.local --email you@example.org --given-name You
+pnpm dev                            # http://localhost:3000
 ```
 
-# Building For Production
+`pnpm exec modulus keys generate` prints a fresh set of JWT, LTI, and session
+keys for `.env.local`. Keep production keys stable once Canvas is registered:
+the LMS holds the LTI key ID and public key.
 
-To build this application for production:
+The database runs from `postgres/docker-compose.yml`. `./postgres/postgres.sh
+--profile adminer up -d` adds Adminer on http://localhost:9001. Data lives in
+`postgres/data/` (gitignored).
 
-```bash
+### Testing LTI Launches Locally
+
+Canvas will not launch against plain HTTP. `pnpm devlti` serves HTTPS on
+`modulus.infonomic.local`; it needs `certs/local.key` and `certs/local.crt`
+(gitignored) and a matching `/etc/hosts` entry.
+
+## Configuration
+
+| File | Holds | Committed |
+| --- | --- | --- |
+| `.env` | Public `VITE_*` values, inlined into the client bundle at build time. | Yes; never put a secret here. |
+| `.env.local` | Secrets and local overrides. | No. |
+| `.env.example` | The template for `.env.local`. | Yes. |
+
+The server reads its configuration at runtime and fails at boot, naming the
+setting, when one is missing.
+
+### Deployment Modes
+
+One build serves three modes, selected by `DEPLOYMENT_MODE`:
+
+| Mode | Serves | Background jobs |
+| --- | --- | --- |
+| `all-in-one` | Learner, LTI, and admin surfaces. | Per `JOB_QUEUE_ENABLED`. |
+| `frontend` | Learner and LTI surfaces; admin returns 404. | Never (`JOB_QUEUE_ENABLED=false` is required). |
+| `admin` | Admin surface; learner and LTI return 404. | Yes. Run one instance. |
+
+```sh
 pnpm build
+pnpm start              # mode from .env.local
+pnpm start:frontend
+pnpm start:admin
 ```
 
-## Styling
+Every mode answers `GET /routes/elb-status` with its mode and whether jobs run.
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## Project Layout
 
-### Removing Tailwind CSS
+| Path | What it is |
+| --- | --- |
+| `src/server.ts`, `src/start.ts`, `src/router.tsx` | Entry files; each is one call into the host package. |
+| `src/routes/` | One file per route, each calling a packaged factory. Keep the paths under `src/routes/routes/` fixed: Canvas registrations and activity pages call those URLs. |
+| `src/routes/$lng/_public/` | This installation's public pages (home, about, docs). |
+| `src/modules/` | Code for the public pages: home components and the docs renderer. |
+| `src/content/docs/` | Installation docs, rendered at `/docs`. `NN-` prefixes set the order; front matter needs a `title`. |
+| `public/` | Favicons, fonts, and static assets. |
+| `email-templates/` | Transactional email templates. |
+| `postgres/` | The local database. |
+| `_docker/` | The production image and the AWS ECS deploy scripts. |
 
-If you prefer not to use Tailwind CSS:
+Routes are localised under `$lng`: English URLs have no prefix and Spanish
+URLs start with `/es`. The locale set comes from the host package.
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
+## Deployment
 
-## Linting & Formatting
+Production runs on AWS ECS (EC2 launch type, Graviton) as two services from
+one image: `frontend` for learners and LTI, `admin` for administration and the
+background jobs. See [`_docker/README.md`](_docker/README.md) for the image,
+running it locally, and the build, push, migrate, and deploy scripts.
 
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
+## Upgrading Modulus
 
+1. Change every `@modulus-learning/*` dependency to the new version, together,
+   and run `pnpm install`.
+2. Read the release notes for breaking changes and migrations, and copy any new
+   route files from the reference installation.
+3. Build and test locally against `pnpm exec modulus db upgrade --env-file .env.local`.
+4. Deploy. The deploy script runs `modulus db upgrade` before the new image
+   serves traffic.
 
-```bash
-pnpm lint
-pnpm format
-pnpm check
-```
+`tailwind-merge` is listed here only because host-tanstack-start 0.11.3 omits
+it from its dependencies. Remove it after upgrading to a release with the fix.
 
+## Commands
 
-## Deploy with Nitro
+| Command | Does |
+| --- | --- |
+| `pnpm dev` / `pnpm devlti` | Development server on port 3000 (HTTP / HTTPS). |
+| `pnpm build` | Production build into `.output/`. |
+| `pnpm start`, `start:frontend`, `start:admin` | Serve the build with `.env` and `.env.local`. |
+| `pnpm typecheck` | TypeScript, no emit. |
+| `pnpm lint` / `pnpm lint:check` | Biome with safe fixes / read-only. |
+| `pnpm db:up` / `pnpm db:down` | Start or stop the local database. |
+| `pnpm exec modulus <command>` | The Modulus CLI: `db`, `admin create`, `keys generate`. |
 
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
+## Privacy
 
-```bash
-npm run build
-node .output/server/index.mjs
-```
-
-The build output is a self-contained Node server. To deploy, push the `.output/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
-
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+Activities receive an opaque user ID, a display name, the activity context, and
+normalised scores; no learner PII crosses into them. Never commit learner or
+instructor data, LTI client or deployment IDs, keys, tokens, or AWS account
+details.
