@@ -1,0 +1,4 @@
+/**
+ * Restyles of kit and Modulus components on public pages only (`@layer overrides`,
+ * `@scope (:root[data-theme-context="public"])`).
+ */

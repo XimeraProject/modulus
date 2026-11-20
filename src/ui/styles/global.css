@@ -1,0 +1,17 @@
+/**
+ * This installation's stylesheet entry, imported by `src/routes/__root.tsx`: the kit and Modulus
+ * CSS, OSU's theme and overrides, then the one Tailwind entry, then OSU's own component CSS.
+ *
+ * The layer order comes from the package: the root route renders the `MODULUS_LAYER_ORDER`
+ * statement first in <head>, and the `modulus()` preset's PostCSS plugin prepends it to every
+ * stylesheet. This file declares none; `pnpm test:css-build` checks the built output.
+ *
+ * Every OSU rule is layered and scoped to `:root[data-theme-context="public"]`, so it never
+ * reaches the dashboard, admin or integration screens (`pnpm test:css` enforces this).
+ */
+
+@import "@modulus-learning/host-tanstack-start/styles/modulus.css";
+@import "./theme-public.css";
+@import "./overrides.css";
+@import "./tailwind.css";
+@import "./app.css";

@@ -1,0 +1,5 @@
+/**
+ * OSU's own component CSS, in `@layer components` and scoped to the public theme context.
+ */
+
+@import "./components/branding.css";

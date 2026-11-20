@@ -1,0 +1,41 @@
+/**
+ * The single Tailwind entry: Tailwind's theme and utilities (no preflight), then the package's
+ * Tailwind configuration (its `@source`, `dark` variant, `container` utility and theme values).
+ *
+ * The OSU `@theme` comes after the package import, whose `@theme` resets the font and breakpoint
+ * namespaces. It only adds names; shared colours and fonts change on the public scope root in
+ * `overrides.css`. The values point at the ramps in `theme-public.css`, which exist only on public
+ * pages, the only place OSU markup appears.
+ */
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@modulus-learning/host-tanstack-start/styles/tailwind.css";
+
+@theme {
+  --color-scarlet-25: var(--scarlet-25);
+  --color-scarlet-50: var(--scarlet-50);
+  --color-scarlet-100: var(--scarlet-100);
+  --color-scarlet-200: var(--scarlet-200);
+  --color-scarlet-300: var(--scarlet-300);
+  --color-scarlet-400: var(--scarlet-400);
+  --color-scarlet-500: var(--scarlet-500);
+  --color-scarlet-600: var(--scarlet-600);
+  --color-scarlet-700: var(--scarlet-700);
+  --color-scarlet-800: var(--scarlet-800);
+  --color-scarlet-900: var(--scarlet-900);
+  --color-scarlet-950: var(--scarlet-950);
+
+  --color-osu-gray-25: var(--osu-gray-25);
+  --color-osu-gray-50: var(--osu-gray-50);
+  --color-osu-gray-100: var(--osu-gray-100);
+  --color-osu-gray-200: var(--osu-gray-200);
+  --color-osu-gray-300: var(--osu-gray-300);
+  --color-osu-gray-400: var(--osu-gray-400);
+  --color-osu-gray-500: var(--osu-gray-500);
+  --color-osu-gray-600: var(--osu-gray-600);
+  --color-osu-gray-700: var(--osu-gray-700);
+  --color-osu-gray-800: var(--osu-gray-800);
+  --color-osu-gray-900: var(--osu-gray-900);
+  --color-osu-gray-950: var(--osu-gray-950);
+}
