@@ -77,7 +77,7 @@ function RecaptchaNotice() {
 export function SiteFooter({ lng, sticky = false }: { lng: Locale; sticky?: boolean }) {
   return (
     <div className={`bottom-0 left-0 z-10 w-full overflow-hidden${sticky ? ' sticky' : ''}`}>
-      <footer className="w-full min-w-full bg-canvas-800 px-[18px] pt-8 pb-8 dark:bg-canvas-800">
+      <footer className="w-full min-w-full bg-scarlet-500 px-[18px] pt-8 pb-8 dark:bg-scarlet-800">
         <div className="footer-content mx-auto max-w-[1200px] gap-0 text-white sm:grid lg:grid-cols-[1fr_1.2fr] lg:gap-8">
           <div className="footer-1">
             <div id="branding" className="branding -ml-1 mb-2">
@@ -99,11 +99,11 @@ export function SiteFooter({ lng, sticky = false }: { lng: Locale; sticky?: bool
               {SECTIONS.map((section) => (
                 <div key={section.title}>
                   <h3 className="mb-4 font-semibold">{section.title}</h3>
-                  <ul className="space-y-1 text-gray-400">
+                  <ul className="space-y-1 text-white/80">
                     {section.links.map((link) => (
                       <li key={link.href}>
                         <LangLink
-                          className="transition-colors hover:text-white"
+                          className="transition-colors hover:text-white hover:underline"
                           href={link.href}
                           lng={lng}
                         >

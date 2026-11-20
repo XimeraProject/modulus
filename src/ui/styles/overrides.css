@@ -2,3 +2,19 @@
  * Restyles of kit and Modulus components on public pages only (`@layer overrides`,
  * `@scope (:root[data-theme-context="public"])`).
  */
+
+@layer overrides {
+  @scope (:root[data-theme-context="public"]) {
+    /*
+      The kit's scroll-to-top button is filled with the primary colour, which on public pages is
+      Scarlet, the same as the footer it floats over. In light mode a white ring and a soft shadow
+      keep it visible against the footer and the white page alike; in dark mode it is already
+      white.
+    */
+    :scope:not(.dark) .infonomic-scroll-to-top-shown {
+      box-shadow:
+        0 0 0 2px white,
+        0 2px 8px oklch(0% 0 0 / 0.25);
+    }
+  }
+}
