@@ -1,13 +1,32 @@
-node_modules
+# dependencies
+/node_modules
+
+# tanstack start / nitro
+/.output/
+/.nitro/
+/.tanstack/
+
+# local HTTPS certs for `pnpm devlti`
+/certs/
+
+# local postgres data and dumps
+/postgres/data/
+/postgres/backups/
+
+# misc
 .DS_Store
-dist
-dist-ssr
-*.local
-.env
-.nitro
-.tanstack
-.wrangler
-.output
-.vinxi
-__unconfig*
+*.pem
+*.tsbuildinfo
 todos.json
+
+# debug
+npm-debug.log*
+
+# local env files and generated keys
+.env*.local
+keys.env
+
+# .env is committed and holds public values only; secrets live in .env.local
+!.env
+
+/uploads

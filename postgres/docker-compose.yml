@@ -1,0 +1,30 @@
+name: osu-modulus-postgres
+
+# Local development database for the OSU installation, on the standard port
+services:
+  db:
+    # Core's queries rely on PostgreSQL 18 OLD/NEW references in RETURNING.
+    image: postgres:18
+    container_name: osu_modulus_postgres
+    environment:
+      POSTGRES_USER: modulus
+      POSTGRES_PASSWORD: modulus
+      POSTGRES_DB: osu_modulus_dev
+    ports:
+      - 5432:5432
+    volumes:
+      - type: bind
+        source: ./data
+        target: /var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U modulus -d osu_modulus_dev']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  adminer:
+    image: adminer
+    profiles:
+      - adminer
+    ports:
+      - 9001:8080

@@ -2,43 +2,61 @@
   "name": "osu.modulus-learning.org",
   "private": true,
   "type": "module",
-  "imports": {
-    "#/*": "./src/*"
-  },
   "scripts": {
-    "dev": "vite dev --port 3000",
-    "generate-routes": "vite build",
+    "clean": "rm -rf node_modules .output .nitro .tanstack",
+    "dev": "vite dev",
+    "devlti": "cross-env DEV_HTTPS=true NODE_OPTIONS=--use-openssl-ca vite dev --host modulus.infonomic.local",
     "build": "vite build",
-    "preview": "vite preview",
-    "format": "biome format",
-    "lint": "biome lint",
-    "check": "biome check"
+    "start": "node --env-file-if-exists=.env --env-file-if-exists=.env.local .output/server/index.mjs",
+    "start:frontend": "cross-env DEPLOYMENT_MODE=frontend JOB_QUEUE_ENABLED=false node --env-file-if-exists=.env --env-file-if-exists=.env.local .output/server/index.mjs",
+    "start:admin": "cross-env DEPLOYMENT_MODE=admin node --env-file-if-exists=.env --env-file-if-exists=.env.local .output/server/index.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check --write --diagnostic-level=error",
+    "lint:check": "biome check --diagnostic-level=error",
+    "db:up": "./postgres/postgres.sh up -d",
+    "db:down": "./postgres/postgres.sh down"
+  },
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "@tanstack/react-devtools": "0.10.15",
+    "@google-cloud/recaptcha-enterprise": "^7.3.0",
+    "@infonomic/uikit": "^6.8.2",
+    "@modulus-learning/core": "0.11.3",
+    "@modulus-learning/host-tanstack-start": "0.11.3",
+    "@modulus-learning/lms-canvas": "0.11.3",
     "@tanstack/react-router": "1.170.46",
-    "@tanstack/react-router-devtools": "1.167.4",
-    "@tanstack/react-start": "1.169.7",
-    "nitro": "3.0.260610-beta",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.18"
+    "@tanstack/react-start": "1.169.4",
+    "argon2": "^0.45.1",
+    "bcrypt": "^6.0.0",
+    "googleapis": "^188.0.0",
+    "gray-matter": "^4.0.3",
+    "hast-util-to-jsx-runtime": "^2.3.6",
+    "lucide-react": "^1.64.0",
+    "mdast-util-to-string": "^4.0.0",
+    "nitro": "3.0.261029-rc",
+    "pg": "^8.23.1",
+    "pino": "^10.4.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "tailwind-merge": "^3.7.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.5",
-    "@tanstack/devtools-vite": "0.8.7",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^6.0.1",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lightningcss"
-    ]
+    "@biomejs/biome": "^2.6.4",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/hast": "^3.0.5",
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "cross-env": "^10.1.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "8.3.5"
   }
 }
