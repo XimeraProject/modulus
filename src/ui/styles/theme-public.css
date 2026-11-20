@@ -1,4 +1,90 @@
 /**
  * OSU's brand ramps and their mapping onto the shared tokens, for public pages only
- * (`@layer overrides`, `@scope (:root[data-theme-context="public"])`).
+ * (`@layer overrides`, `@scope (:root[data-theme-context="public"])`). The dashboard, admin and
+ * integration screens keep the Modulus defaults.
+ *
+ * The scope root is <html> itself, where the package declares its ramps, so tokens set on
+ * `:scope` here replace the package values for the whole public page, portals included.
  */
+
+@layer overrides {
+  @scope (:root[data-theme-context="public"]) {
+    :scope {
+      /*
+        Scarlet, #BA0C2F (OSU brand). The ramp uses absolute lightness stops, as infonomic.io's
+        secondary ramp does: multiplying a base at L 0.50 clips the light end to white. Chroma
+        eases off at both ends so tints stay pink rather than neon and shades stay deep red.
+      */
+      --scarlet-base: oklch(50.24% 0.1969 20.61);
+
+      --scarlet-25: oklch(from var(--scarlet-base) 0.985 0.012 h);
+      --scarlet-50: oklch(from var(--scarlet-base) 0.965 0.024 h);
+      --scarlet-100: oklch(from var(--scarlet-base) 0.925 0.045 h);
+      --scarlet-200: oklch(from var(--scarlet-base) 0.86 0.08 h);
+      --scarlet-300: oklch(from var(--scarlet-base) 0.72 0.14 h);
+      --scarlet-400: var(--scarlet-base);
+      --scarlet-500: oklch(from var(--scarlet-base) 0.46 c h);
+      --scarlet-600: oklch(from var(--scarlet-base) 0.42 c h);
+      --scarlet-700: oklch(from var(--scarlet-base) 0.37 calc(c * 0.9) h);
+      --scarlet-800: oklch(from var(--scarlet-base) 0.32 calc(c * 0.8) h);
+      --scarlet-900: oklch(from var(--scarlet-base) 0.27 calc(c * 0.7) h);
+      --scarlet-950: oklch(from var(--scarlet-base) 0.22 calc(c * 0.6) h);
+
+      /* Gray, #A7B1B7 (OSU brand): a cool gray at L 0.75. Same approach as Scarlet. */
+      --osu-gray-base: oklch(75.43% 0.0142 233.82);
+
+      --osu-gray-25: oklch(from var(--osu-gray-base) 0.985 calc(c * 0.4) h);
+      --osu-gray-50: oklch(from var(--osu-gray-base) 0.965 calc(c * 0.5) h);
+      --osu-gray-100: oklch(from var(--osu-gray-base) 0.93 calc(c * 0.7) h);
+      --osu-gray-200: oklch(from var(--osu-gray-base) 0.87 c h);
+      --osu-gray-300: oklch(from var(--osu-gray-base) 0.81 c h);
+      --osu-gray-400: var(--osu-gray-base);
+      --osu-gray-500: oklch(from var(--osu-gray-base) 0.65 c h);
+      --osu-gray-600: oklch(from var(--osu-gray-base) 0.55 c h);
+      --osu-gray-700: oklch(from var(--osu-gray-base) 0.45 c h);
+      --osu-gray-800: oklch(from var(--osu-gray-base) 0.37 c h);
+      --osu-gray-900: oklch(from var(--osu-gray-base) 0.29 c h);
+      --osu-gray-950: oklch(from var(--osu-gray-base) 0.22 c h);
+
+      /*
+        Primary is Scarlet. The package derives --primary-* from a near-black base by
+        multiplying lightness, and pins the three lightest steps to a blue hue, so setting
+        --primary-base alone would clip and tint them. Map every step instead.
+      */
+      --primary-base: var(--scarlet-base);
+      --primary-25: var(--scarlet-25);
+      --primary-50: var(--scarlet-50);
+      --primary-100: var(--scarlet-100);
+      --primary-200: var(--scarlet-200);
+      --primary-300: var(--scarlet-300);
+      --primary-400: var(--scarlet-400);
+      --primary-500: var(--scarlet-500);
+      --primary-600: var(--scarlet-600);
+      --primary-700: var(--scarlet-700);
+      --primary-800: var(--scarlet-800);
+      --primary-900: var(--scarlet-900);
+      --primary-950: var(--scarlet-950);
+
+      /*
+        Gray and canvas take OSU Gray's hue and chroma at the package's base lightness, so the
+        package's own ramps (calc(l * k) c h) keep every step's lightness, and with it the
+        contrast of text, borders and surfaces in kit and Modulus components.
+      */
+      --gray-base: oklch(from var(--osu-gray-base) 0.5984 c h);
+      --canvas-base: oklch(from var(--osu-gray-base) 0.542 calc(c * 0.6) h);
+
+      /* The package applies --page-background to <body>. */
+      --page-background: white;
+    }
+
+    /* This layer beats the package's .dark value, so restate it with the OSU-tinted canvas. */
+    :scope.dark {
+      --page-background: var(--canvas-900);
+    }
+
+    /* Chromeless screens are always light, as in the package; last, so it beats :scope.dark. */
+    :scope[data-chrome="chromeless"] {
+      --page-background: var(--gray-50);
+    }
+  }
+}
