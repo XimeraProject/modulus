@@ -37,6 +37,8 @@ A single pnpm package (not a monorepo). Node 26 locally, pnpm 12 (pinned by
 | `src/routes/$lng/_public/` | This installation's public pages: home, about, docs. |
 | `src/modules/` | Feature modules: the docs renderer (`docs/`) and the markdown pages registry (`pages/`). |
 | `src/ui/` | Site-wide page furniture and chrome (`src/ui/components/`, `src/ui/styles/`, …): the home hero, branding, and the local site footer. |
+| `src/ui/styles/` | The stylesheet entry: `global.css`, imported by `src/routes/__root.tsx`, composes the package CSS, the OSU public theme (`theme-public.css`), `overrides.css`, the single Tailwind entry (`tailwind.css`) and OSU component CSS (`app.css`). |
+| `tests/css/` | The CSS layer guard (`node:test`), the repository's only tests. |
 | `src/content/pages/` | Markdown for the root-level pages (`/about`, `/privacy-policy`, `/terms-of-use`, `/cookies`). |
 | `src/content/docs/` | Installation docs, rendered at `/docs`. |
 | `public/`, `email-templates/` | Static assets and transactional email templates. |
@@ -75,12 +77,14 @@ For LTI work use `pnpm devlti`, which serves HTTPS on `modulus.infonomic.local`
 pnpm dev            pnpm build          pnpm typecheck
 pnpm lint           pnpm lint:check     pnpm start[:frontend|:admin]
 pnpm db:up          pnpm db:down        pnpm exec modulus <command>
+pnpm test:css       pnpm test:css-build
 ```
 
 `pnpm lint` runs Biome with `--write` (safe fixes only, never `--unsafe`), so it
-**modifies files**; `pnpm lint:check` is read-only. There is no test suite yet;
-verification is lint, typecheck, build, and booting the build (the `verify`
-skill).
+**modifies files**; `pnpm lint:check` is read-only. The only tests are the CSS
+layer guard: `pnpm test:css` checks the stylesheets under `src/`, and
+`pnpm test:css-build` checks the built CSS after `pnpm build`. Verification is
+lint, typecheck, the guard, build, and booting the build (the `verify` skill).
 
 ## Conventions
 
@@ -139,7 +143,15 @@ skill).
   dependency it does not declare, the build fails with `failed to resolve
   import`; add the dependency to this application as a workaround, list it here
   with the version that needs it, and remove it once a release fixes it. None
-  are needed at 0.12.0.
+  are needed at 0.13.0.
+- **OSU CSS must never reach the packaged areas.** Brand tokens and restyles go
+  in `@layer overrides`, OSU component CSS in `@layer components`, both inside
+  `@scope (:root[data-theme-context="public"])`; inside a scope write `:scope`
+  and `:scope.dark`, never `:root`, `html` or `.dark`. Nothing may reach the
+  `protected` (dashboard, admin) or `integration` (LTI, agent) contexts, and no
+  rule is unlayered or `!important`. `pnpm test:css` enforces all of it. A
+  top-level `@theme` in `src/ui/styles/tailwind.css` may only add names, after
+  the package import.
 - **The locale set (`en`, `es`) is fixed by the host package.** English URLs
   have no prefix; Spanish ones start with `/es`.
 - **Port 5432 is shared** with the Modulus monorepo's local database; stop one

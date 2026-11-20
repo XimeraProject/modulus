@@ -89,6 +89,8 @@ Every mode answers `GET /routes/elb-status` with its mode and whether jobs run.
 | `src/routes/$lng/_public/` | This installation's public pages (home, docs, about, and the legal pages). |
 | `src/modules/` | The docs renderer and the markdown pages registry. |
 | `src/ui/` | Site-wide page furniture and chrome: the hero, branding, and site footer under `src/ui/components/`. |
+| `src/ui/styles/` | The stylesheet entry, `global.css`: the package CSS, the OSU public theme, overrides, the single Tailwind entry, and OSU component CSS. OSU rules are layered and scoped to public pages, so the dashboard and admin keep the Modulus defaults. |
+| `tests/css/` | The CSS layer guard. |
 | `src/content/docs/` | Installation docs, rendered at `/docs`. `NN-` prefixes set the order; front matter needs a `title`. |
 | `src/content/pages/` | Root-level pages (`/about`, `/privacy-policy`, `/terms-of-use`, `/cookies`). The filename is the path; front matter needs a `title`. |
 | `public/` | Favicons, fonts, and static assets. |
@@ -128,6 +130,7 @@ part of the upgrade.
 | `pnpm start`, `start:frontend`, `start:admin` | Serve the build with `.env` and `.env.local`. |
 | `pnpm typecheck` | TypeScript, no emit. |
 | `pnpm lint` / `pnpm lint:check` | Biome with safe fixes / read-only. |
+| `pnpm test:css` / `pnpm test:css-build` | The CSS layer guard, on the source stylesheets / on the built CSS after `pnpm build`. |
 | `pnpm db:up` / `pnpm db:down` | Start or stop the local database. |
 | `pnpm exec modulus <command>` | The Modulus CLI: `db`, `admin create`, `keys generate`. |
 
