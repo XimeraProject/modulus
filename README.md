@@ -139,3 +139,16 @@ Activities receive an opaque user ID, a display name, the activity context, and
 normalised scores; no learner PII crosses into them. Never commit learner or
 instructor data, LTI client or deployment IDs, keys, tokens, or AWS account
 details.
+
+## Licence
+
+This installation is a derivative of
+[Modulus](https://github.com/Modulus-Learning/app.modulus-learning.org) and,
+like the Modulus packages it is built from, is made available under the
+**Mozilla Public License 2.0 (MPL-2.0)**. See [LICENSE](./LICENSE).
+
+The licence does not cover third-party material: the fonts under
+`public/fonts/` keep their own licences (SIL Open Font License, alongside each
+font), dependencies keep their authors' licences, and The Ohio State
+University's name and logos are its trademarks and are not covered by this
+licence.

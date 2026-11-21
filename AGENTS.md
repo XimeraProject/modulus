@@ -109,8 +109,9 @@ lint, typecheck, the guard, build, and booting the build (the `verify` skill).
   before executing it.
 - **Biome** handles lint and format for JS/TS/JSON/CSS; Markdown is not
   formatted by it.
-- **Licensing.** The Modulus packages are MPL-2.0. This repository has no
-  licence file yet; ask before adding one.
+- **Licensing.** This repository is MPL-2.0, like the Modulus packages it is
+  built from (`LICENSE`, and `"license"` in `package.json`). Fonts, dependencies,
+  and OSU's name and logos keep their own terms; see Licence in `README.md`.
 
 ## Things That Bite
 
