@@ -16,5 +16,15 @@
         0 0 0 2px white,
         0 2px 8px oklch(0% 0 0 / 0.25);
     }
+
+    /*
+      Once scrolled, the packaged front app bar fills with `dark:bg-primary-900` in dark mode,
+      which on public pages is a near-black red. Match the footer's dark Scarlet instead. The
+      utility layer outranks this one, so redefine the colour the utility reads, on the header
+      alone, rather than restyling the background.
+    */
+    :scope.dark header:has(> .app-bar) {
+      --color-primary-900: var(--scarlet-600);
+    }
   }
 }

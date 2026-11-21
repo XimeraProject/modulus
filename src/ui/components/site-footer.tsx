@@ -2,10 +2,13 @@ import { Image, LangLink } from '@modulus-learning/host-tanstack-start/framework
 import type { Locale } from '@modulus-learning/host-tanstack-start/i18n/i18n-config'
 import logoWhite from '@modulus-learning/host-tanstack-start/images/logo/modulus-logo-white.svg'
 
+import osuWhite from '@/ui/images/osu-white.svg'
+
 /**
  * This installation's site footer. The packaged `SiteFooter` (host-tanstack-start
- * 0.12.0) hardcodes its link columns, so this copy keeps its layout and chrome
- * and replaces the columns with two: About and Legal.
+ * 0.12.0) hardcodes its link columns and branding, so this copy keeps its chrome
+ * and lays out the OSU and Modulus logos, the Ximera team's contact details, and
+ * two link columns: About and Legal.
  */
 
 interface FooterLink {
@@ -32,95 +35,145 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
   },
 ]
 
-function Credits() {
+const XIMERA_EMAIL = 'ximera@math.osu.edu'
+
+const linkClass = 'text-white underline-offset-2 hover:underline'
+
+function Logos({ lng }: { lng: Locale }) {
   return (
-    <p className="mt-0 text-[0.9em]">
-      Made with ❤️ by{' '}
+    <div className="flex items-center gap-5 sm:gap-6">
       <a
-        className="text-white"
-        href="https://infonomic.io"
+        href="https://www.osu.edu/"
         target="_blank"
         rel="noopener noreferrer"
+        className="shrink-0"
+        aria-label="The Ohio State University"
       >
-        Infonomic
+        <img src={osuWhite} width={94} height={64} alt="" className="block h-16 w-auto" />
       </a>
-    </p>
+      <span className="h-14 w-px shrink-0 bg-white/40" aria-hidden="true" />
+      <LangLink prefetch={false} href="/" lng={lng} aria-label="Modulus home">
+        <Image src={logoWhite} width={170} alt="Modulus" />
+      </LangLink>
+    </div>
+  )
+}
+
+function Contact() {
+  return (
+    <address className="mt-6 space-y-1 text-[0.95em] not-italic text-white/85">
+      <p className="font-semibold text-white">Ximera team</p>
+      <p>100 Math Tower, 231 West 18th Avenue, Columbus OH, 43210-1174</p>
+      <p>
+        Phone:{' '}
+        <a className={linkClass} href="tel:+17738095659">
+          (773) 809-5659
+        </a>
+        <span className="mx-2 text-white/50" aria-hidden="true">
+          |
+        </span>
+        <a className={linkClass} href={`mailto:${XIMERA_EMAIL}`}>
+          Contact
+        </a>
+      </p>
+    </address>
+  )
+}
+
+function FooterNav({ lng }: { lng: Locale }) {
+  return (
+    <nav aria-label="Footer">
+      <div className="grid grid-cols-2 gap-6 md:gap-10">
+        {SECTIONS.map((section) => (
+          <div key={section.title}>
+            <h3 className="mb-4 font-semibold">{section.title}</h3>
+            <ul className="space-y-1 text-white/80">
+              {section.links.map((link) => (
+                <li key={link.href}>
+                  <LangLink
+                    className="transition-colors hover:text-white hover:underline"
+                    href={link.href}
+                    lng={lng}
+                  >
+                    {link.label}
+                  </LangLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </nav>
   )
 }
 
 function RecaptchaNotice() {
   return (
-    <span style={{ fontSize: '0.9em' }}>
-      This site is protected by reCAPTCHA and the Google&nbsp;
+    <p>
+      This site is protected by reCAPTCHA and the Google{' '}
       <a
         href="https://policies.google.com/privacy"
-        className="ext text-white"
+        className={`ext ${linkClass}`}
         target="_blank"
         rel="noopener nofollow noreferrer"
       >
         Privacy Policy
-      </a>
-      &nbsp;and&nbsp;
+      </a>{' '}
+      and{' '}
       <a
         href="https://policies.google.com/terms"
-        className="ext text-white"
+        className={`ext ${linkClass}`}
         target="_blank"
         rel="noopener nofollow noreferrer"
       >
         Terms of Service
-      </a>
-      &nbsp;apply.
-    </span>
+      </a>{' '}
+      apply.
+    </p>
   )
 }
 
 export function SiteFooter({ lng, sticky = false }: { lng: Locale; sticky?: boolean }) {
   return (
     <div className={`bottom-0 left-0 z-10 w-full overflow-hidden${sticky ? ' sticky' : ''}`}>
-      <footer className="w-full min-w-full bg-scarlet-500 px-[18px] pt-8 pb-8 dark:bg-scarlet-800">
-        <div className="footer-content mx-auto max-w-[1200px] gap-0 text-white sm:grid lg:grid-cols-[1fr_1.2fr] lg:gap-8">
-          <div className="footer-1">
-            <div id="branding" className="branding -ml-1 mb-2">
-              <LangLink prefetch={false} href="/" lng={lng} aria-label="Home">
-                <div className="mr-2 w-[200px] transition-all duration-500 ease-out">
-                  <Image src={logoWhite} width={200} alt="Modulus" />
-                </div>
-              </LangLink>
+      <footer className="w-full min-w-full bg-scarlet-500 px-[18px] pt-10 pb-8 dark:bg-scarlet-600">
+        <div className="mx-auto max-w-[1200px] text-white">
+          <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
+            <div>
+              <Logos lng={lng} />
+              <Contact />
             </div>
-            <div className="hidden sm:block">
-              <Credits />
-            </div>
-            <div className="hidden sm:block" style={{ marginBottom: '0.5em' }}>
-              <RecaptchaNotice />
+            <div className="lg:justify-self-end lg:pt-2">
+              <FooterNav lng={lng} />
             </div>
           </div>
-          <nav className="footer-2 pt-6 lg:w-[70%] lg:justify-self-end" aria-label="Footer">
-            <div className="grid grid-cols-2 gap-1 sm:gap-4 md:gap-6">
-              {SECTIONS.map((section) => (
-                <div key={section.title}>
-                  <h3 className="mb-4 font-semibold">{section.title}</h3>
-                  <ul className="space-y-1 text-white/80">
-                    {section.links.map((link) => (
-                      <li key={link.href}>
-                        <LangLink
-                          className="transition-colors hover:text-white hover:underline"
-                          href={link.href}
-                          lng={lng}
-                        >
-                          {link.label}
-                        </LangLink>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+
+          <div className="mt-10 border-t border-white/25 pt-6 text-[0.85em] text-white/80">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+              <p className="text-white">
+                © 2013–{new Date().getFullYear()}, The Ohio State University — Ximera team
+              </p>
+              <p>
+                Made with ❤️ by{' '}
+                <a
+                  className={linkClass}
+                  href="https://infonomic.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Infonomic
+                </a>
+              </p>
             </div>
-          </nav>
-          <div className="footer-3 pt-0 sm:hidden">
-            <div className="mt-[1.5em] block">
-              <Credits />
-            </div>
-            <div style={{ marginBottom: '0.5em' }}>
+            <div className="mt-3 space-y-1 lg:max-w-[70%]">
+              <p>
+                If you have trouble accessing this page and need to request an alternate format,
+                contact{' '}
+                <a className={linkClass} href={`mailto:${XIMERA_EMAIL}`}>
+                  {XIMERA_EMAIL}
+                </a>
+                .
+              </p>
               <RecaptchaNotice />
             </div>
           </div>
