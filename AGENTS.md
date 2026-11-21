@@ -32,7 +32,7 @@ A single pnpm package (not a monorepo). Node 26 locally, pnpm 12 (pinned by
 
 | Path | What it is |
 |---|---|
-| `src/server.ts`, `src/start.ts`, `src/router.tsx`, `src/client.tsx` | Entry files; each is one call into `@modulus-learning/host-tanstack-start`. |
+| `src/server.ts`, `src/start.ts`, `src/router.tsx`, `src/client.tsx` | Entry files. The first three are each one call into `@modulus-learning/host-tanstack-start`; `client.tsx` is Start's standard browser entry. |
 | `src/routes/` | One file per route, each calling a packaged route factory, plus literal `createFileRoute` server routes under `src/routes/routes/`. |
 | `src/routes/$lng/_public/` | This installation's public pages: home, about, accessibility, and the legal pages. |
 | `src/modules/` | Feature modules: the markdown pages registry and renderer (`pages/`). |

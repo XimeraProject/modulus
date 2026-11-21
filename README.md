@@ -84,18 +84,20 @@ Every mode answers `GET /routes/elb-status` with its mode and whether jobs run.
 
 | Path | What it is |
 | --- | --- |
-| `src/server.ts`, `src/start.ts`, `src/router.tsx` | Entry files; each is one call into the host package. |
+| `src/server.ts`, `src/start.ts`, `src/router.tsx`, `src/client.tsx` | Entry files. The first three are each one call into the host package; `client.tsx` is Start's standard browser entry. |
 | `src/routes/` | One file per route, each calling a packaged factory. Keep the paths under `src/routes/routes/` fixed: Canvas registrations and activity pages call those URLs. |
 | `src/routes/$lng/_public/` | This installation's public pages (home, about, accessibility, and the legal pages). |
 | `src/modules/` | The markdown pages registry and renderer (`pages/`). |
 | `src/ui/` | Site-wide page furniture and chrome: the hero, branding, and site footer under `src/ui/components/`. |
 | `src/ui/styles/` | The stylesheet entry, `global.css`: the package CSS, the OSU public theme, overrides, the single Tailwind entry, and OSU component CSS. OSU rules are layered and scoped to public pages, so the dashboard and admin keep the Modulus defaults. |
-| `tests/css/` | The CSS layer guard. |
 | `src/content/pages/` | Root-level pages (`/about`, `/accessibility`, `/privacy-policy`, `/terms-of-use`, `/cookies`). The filename is the path; front matter needs a `title`. |
+| `tests/css/` | The CSS layer guard. |
 | `public/` | Favicons, fonts, and static assets. |
 | `email-templates/` | Transactional email templates. |
 | `postgres/` | The local database. |
 | `_docker/` | The production image and the AWS ECS deploy scripts. |
+| `specs/` | Design notes and implementation plans. |
+| `scripts/` | Developer helper scripts. |
 
 Routes are localised under `$lng`: English URLs have no prefix and Spanish
 URLs start with `/es`. The locale set comes from the host package.
@@ -111,14 +113,16 @@ running it locally, and the build, push, migrate, and deploy scripts.
 
 1. Change every `@modulus-learning/*` dependency to the new version, together,
    and run `pnpm install`.
-2. Read the release notes for breaking changes and migrations, and copy any new
-   route files from the reference installation.
+2. Read the release notes for breaking changes and migrations, and add any new
+   route files from the upstream reference installation, `apps/gradebook/src/routes/`
+   at the release tag.
 3. Build and test locally against `pnpm exec modulus db upgrade --env-file .env.local`.
 4. Deploy. The deploy script runs `modulus db upgrade` before the new image
    serves traffic.
 
 If a release fixes a dependency workaround listed in `AGENTS.md`, remove it as
-part of the upgrade.
+part of the upgrade. Coding agents follow the same steps in the `upgrade-modulus`
+skill (`.agents/skills/`).
 
 ## Commands
 
