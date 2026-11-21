@@ -12,7 +12,7 @@ import { NotFoundView } from '@modulus-learning/host-tanstack-start/ui/component
 import { SiteFooter } from '@/ui/components/site-footer'
 
 /**
- * Public layout (`/`, `/docs`, and the markdown pages `/about`,
+ * Public layout (`/` and the markdown pages `/about`, `/accessibility`,
  * `/privacy-policy`, `/terms-of-use`, `/cookies`). Verification-only session
  * for the app bar; `SessionRecovery` renews in the browser when the access token has
  * just expired, then re-runs the loaders (spec: Authentication And Sessions).

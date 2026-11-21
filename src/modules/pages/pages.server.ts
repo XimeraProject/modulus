@@ -1,9 +1,9 @@
-import { type DocFrontmatter, parseDocFile } from '@/modules/docs/lib/frontmatter'
+import { type PageFrontmatter, parsePageFile } from './lib/frontmatter'
 
 /**
- * Registry for this installation's standalone pages (About and the legal
- * pages), served at root-level paths. The markdown is bundled at build time
- * with `import.meta.glob`, as the docs are. A page's slug is its filename
+ * Registry for this installation's standalone pages (About, Accessibility and
+ * the legal pages), served at root-level paths. The markdown is bundled at
+ * build time with `import.meta.glob`. A page's slug is its filename
  * stem, or the frontmatter `slug`/`path` when set.
  */
 
@@ -15,14 +15,14 @@ const SOURCES = import.meta.glob('/src/content/pages/*.{md,markdown}', {
 
 export interface Page {
   slug: string
-  frontmatter: DocFrontmatter
+  frontmatter: PageFrontmatter
   body: string
 }
 
 const pages = (() => {
   const map = new Map<string, Page>()
   for (const [filePath, source] of Object.entries(SOURCES)) {
-    const { frontmatter, body } = parseDocFile(source, filePath)
+    const { frontmatter, body } = parsePageFile(source, filePath)
     const stem = (filePath.split('/').pop() ?? filePath).replace(/\.(md|markdown)$/, '')
     const slug = frontmatter.slug ?? stem
     if (map.has(slug)) throw new Error(`pages registry: duplicate slug '${slug}' (in ${filePath})`)

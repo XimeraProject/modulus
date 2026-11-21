@@ -53,7 +53,7 @@ when unsure — wait for `/routes/elb-status`, check the routes, then stop it:
 | Script | Mode | Expect |
 |---|---|---|
 | `pnpm start` | as `.env.local` (normally `all-in-one`) | public pages, admin, and LTI all served |
-| `pnpm start:frontend` | `frontend` | `/`, `/es`, `/docs`, `/sign-in`, `/routes/lti/jwks` → 200; `/admin/sign-in` → 404 |
+| `pnpm start:frontend` | `frontend` | `/`, `/es`, `/about`, `/sign-in`, `/routes/lti/jwks` → 200; `/admin/sign-in` → 404 |
 | `pnpm start:admin` | `admin` | `/admin/sign-in` → 200; `/` redirects; `/routes/lti/jwks` → 404 |
 
 `/routes/elb-status` reports `{"status":"okay","mode":…,"jobs":…}`; confirm the

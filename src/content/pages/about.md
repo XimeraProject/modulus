@@ -23,4 +23,4 @@ Modulus keeps learner data on its side of the boundary. Activities receive an op
 
 Modulus is open source. The OSU installation is built from the published Modulus packages, and the source is available on [GitHub](https://github.com/Modulus-Learning/app.modulus-learning.org).
 
-For instructor and administrator guides, see the [docs](/docs).
+For instructor and administrator guides, see the [Modulus docs](https://modulus-learning.org/docs).

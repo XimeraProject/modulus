@@ -1,20 +1,22 @@
 ---
 name: writing-docs
-description: Use when creating, rewriting, tightening, or reviewing the OSU installation's documentation — the pages under src/content/docs/ rendered at /docs (introduction, accessibility conformance, instructor and administrator guides) — or the repository's README.md and _docker/README.md. Trigger whenever the user asks to write, draft, improve, or review a doc or guide for this installation. Encodes the file format the docs renderer reads, the audience, structure, and voice, so new pages match the existing set.
+description: Use when creating, rewriting, tightening, or reviewing the OSU installation's public pages — the Markdown under src/content/pages/ rendered at root-level paths (/about, /accessibility, /privacy-policy, /terms-of-use, /cookies) — or the repository's README.md and _docker/README.md. Trigger whenever the user asks to write, draft, improve, or review a page, guide, or statement for this installation. Encodes the file format the pages renderer reads, the audience, structure, and voice, so new pages match the existing set.
 ---
 
-# Writing the OSU installation docs
+# Writing the OSU installation pages
 
-The pages in `src/content/docs/` are published on this installation's public
-site at `/docs/<slug>`. Their readers are OSU instructors, course designers,
+The pages in `src/content/pages/` are published on this installation's public
+site at `/<slug>`. Their readers are OSU instructors, course designers,
 accessibility reviewers, and administrators — not Modulus developers. A reader
 should know within two sentences what the page covers and whether it is for
 them, and leave able to do the thing it describes.
 
-Developer documentation for the Modulus packages (architecture, LTI internals,
-the agent library) lives upstream in the `docs/` of
-Modulus-Learning/app.modulus-learning.org. Link to it rather than copying it.
-Repository-facing docs here are `README.md` (running and configuring the
+Product documentation — how Modulus works, instructor and administrator
+guides — lives at [modulus-learning.org/docs](https://modulus-learning.org/docs),
+and developer documentation for the packages (architecture, LTI internals, the
+agent library) lives upstream in the `docs/` of
+Modulus-Learning/app.modulus-learning.org. Link to them rather than copying
+them. Repository-facing docs here are `README.md` (running and configuring the
 installation) and `_docker/README.md` (image and deployment).
 
 Read this file, then the existing pages, then the code or configuration the
@@ -22,25 +24,27 @@ page describes: the page must describe what this installation actually does.
 
 ## File Format
 
-The renderer is `src/modules/docs/`: it bundles the Markdown at build time,
+The renderer is `src/modules/pages/`: it bundles the Markdown at build time,
 parses front matter with `gray-matter`, and renders GitHub-flavoured Markdown.
 
 ```markdown
 ---
-title: "Instructor Guide"
-path: "instructor-guide"
-summary: "One sentence shown on the docs index card and as the page description."
+title: "Accessibility Conformance Report"
+summary: "One sentence used as the page's meta description."
 ---
 
-# Instructor Guide
+# Accessibility Conformance Report
 ```
 
-- **File name** `NN-topic.md`. The numeric prefix sets the order on `/docs`;
-  the rest becomes the slug unless `path` is set. Keep a page's `path` stable
-  once published; links and bookmarks depend on it.
+- **File name** `topic.md`. The stem becomes the slug and the path (`/topic`)
+  unless `slug` is set. Keep a page's slug stable once published; links and
+  bookmarks depend on it.
 - **`title` is required** — the build fails without it. Write `summary` too:
-  the index card shows "No summary available." without it. `path` (or `slug`)
-  overrides the slug and must be unique; a duplicate fails the build.
+  it becomes the page description. A duplicate slug fails the build.
+- **Each page needs a route file**, `src/routes/$lng/_public/<slug>.tsx`, that
+  calls `markdownPageRoute('<slug>')`; copy `about.tsx`. Add a footer link in
+  `src/ui/components/site-footer.tsx` if readers should find it from every
+  page.
 - **The leading `# H1` is dropped when it matches `title`**, so the page does
   not show the title twice. Keep it, matching `title` exactly.
 - **Supported:** headings, lists, links, emphasis, code, GitHub-flavoured
@@ -49,8 +53,8 @@ summary: "One sentence shown on the docs index card and as the page description.
   components, and front-matter-driven features beyond the keys above. Use a
   short paragraph or a bold lead-in instead of an admonition.
 - **Files** such as PDFs and images go in `public/` (served from `/`) and are
-  linked with absolute paths, e.g. `/docs-assets/vpat.pdf`. A file left in
-  `src/content/docs/` is not served.
+  linked with absolute paths, e.g. `/assets/example.pdf`. A file left in
+  `src/content/pages/` is not served.
 
 ## Structure
 
@@ -58,16 +62,15 @@ Pick one job per page:
 
 | Type | Job | Shape |
 |---|---|---|
-| Guide | Get an instructor or administrator through a task. | What you need, numbered steps, what you should see, troubleshooting. |
 | Explanation | Say what Modulus is, why it exists, how it fits with Ximera and Canvas. | Context, how it works, limits. |
-| Reference | Let a reader look up facts: a conformance report, a settings list. | Tables and short entries; no narrative. |
+| Reference | Let a reader look up facts: a conformance report, a policy. | Tables and short entries; no narrative. |
 
-Close guides and explanations with a short section linking related pages,
-written as complete sentences that say what the reader will find.
+Close explanations with a short section linking related pages, written as
+complete sentences that say what the reader will find.
 
 ## Voice and Mechanics
 
-Match the existing pages (`01-introduction.md`, `02-accessibility.md`):
+Match the existing pages (`about.md`, `accessibility.md`):
 
 - **American spelling** ("color", "behavior", "organize") — this is OSU's
   public site.
@@ -93,11 +96,11 @@ plans or dates. Use invented example data, and say that it is an example.
 
 ## Self-Check
 
-1. Front matter has `title`, `path`, and `summary`; the H1 matches `title`.
-2. The file name prefix puts the page in the right place on `/docs`.
-3. No admonitions, MDX, or files linked from `src/content/docs/`.
+1. Front matter has `title` and `summary`; the H1 matches `title`.
+2. A new page has its route file under `src/routes/$lng/_public/`.
+3. No admonitions, MDX, or files linked from `src/content/pages/`.
 4. American spelling, sentence-case headings, consistent with existing pages.
 5. Every statement about behavior was checked against the code or a running
    instance.
-6. `pnpm build` succeeds, and the page renders at `/docs/<slug>` (`pnpm dev`).
+6. `pnpm build` succeeds, and the page renders at `/<slug>` (`pnpm dev`).
 7. Nothing from the public-repository rules appears in the page.

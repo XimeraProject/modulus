@@ -13,7 +13,7 @@ progress here, and Modulus passes scores to Canvas over LTI Assignment and
 Grade Services (AGS).
 
 This repository is a TanStack Start application built from the **published**
-Modulus packages. It owns configuration, public pages, docs content, branding,
+Modulus packages. It owns configuration, public pages and their content, branding,
 and deployment. The product itself — admin and learner UI, LTI and agent
 endpoints, data access — comes from the packages, whose source lives in
 [Modulus-Learning/app.modulus-learning.org](https://github.com/Modulus-Learning/app.modulus-learning.org).
@@ -34,13 +34,12 @@ A single pnpm package (not a monorepo). Node 26 locally, pnpm 12 (pinned by
 |---|---|
 | `src/server.ts`, `src/start.ts`, `src/router.tsx`, `src/client.tsx` | Entry files; each is one call into `@modulus-learning/host-tanstack-start`. |
 | `src/routes/` | One file per route, each calling a packaged route factory, plus literal `createFileRoute` server routes under `src/routes/routes/`. |
-| `src/routes/$lng/_public/` | This installation's public pages: home, about, docs. |
-| `src/modules/` | Feature modules: the docs renderer (`docs/`) and the markdown pages registry (`pages/`). |
+| `src/routes/$lng/_public/` | This installation's public pages: home, about, accessibility, and the legal pages. |
+| `src/modules/` | Feature modules: the markdown pages registry and renderer (`pages/`). |
 | `src/ui/` | Site-wide page furniture and chrome (`src/ui/components/`, `src/ui/styles/`, …): the home hero, branding, and the local site footer. |
 | `src/ui/styles/` | The stylesheet entry: `global.css`, imported by `src/routes/__root.tsx`, composes the package CSS, the OSU public theme (`theme-public.css`), `overrides.css`, the single Tailwind entry (`tailwind.css`) and OSU component CSS (`app.css`). |
 | `tests/css/` | The CSS layer guard (`node:test`), the repository's only tests. |
-| `src/content/pages/` | Markdown for the root-level pages (`/about`, `/privacy-policy`, `/terms-of-use`, `/cookies`). |
-| `src/content/docs/` | Installation docs, rendered at `/docs`. |
+| `src/content/pages/` | Markdown for the root-level pages (`/about`, `/accessibility`, `/privacy-policy`, `/terms-of-use`, `/cookies`). |
 | `public/`, `email-templates/` | Static assets and transactional email templates. |
 | `postgres/` | Local PostgreSQL 18 via docker compose. |
 | `_docker/` | The production image (nginx + Node under supervisord) and the AWS ECS deploy scripts. `_docker/README.md` explains both. |
@@ -128,7 +127,7 @@ lint, typecheck, the guard, build, and booting the build (the `verify` skill).
 - **Every server function's first middleware is a gate.** Server functions run
   at opaque `/_serverFn/<id>` URLs that the path-based mode gate cannot
   classify, so each installation `createServerFn(...)` (for example
-  `src/modules/docs/docs.ts`) starts with a gate middleware from
+  `src/modules/pages/pages.ts`) starts with a gate middleware from
   `@modulus-learning/host-tanstack-start/lib/server-fn`. Start's compiler only
   recognises a literal `createServerFn(...).handler(...)`; keep server-only
   imports in `*.server.ts` modules loaded with a dynamic `import()`.
@@ -191,7 +190,7 @@ tasks, read the matching `SKILL.md` completely and follow it:
 | Apply lint fixes | `.agents/skills/lint-fix/SKILL.md` |
 | Run type checking | `.agents/skills/typecheck/SKILL.md` |
 | Verify a change (lint, types, build, boot) | `.agents/skills/verify/SKILL.md` |
-| Write or revise installation docs | `.agents/skills/writing-docs/SKILL.md` |
+| Write or revise the public pages or READMEs | `.agents/skills/writing-docs/SKILL.md` |
 | Upgrade the Modulus packages | `.agents/skills/upgrade-modulus/SKILL.md` |
 | Deploy to AWS ECS | `.agents/skills/deploy/SKILL.md` |
 

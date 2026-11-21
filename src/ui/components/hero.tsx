@@ -38,7 +38,7 @@ export function Hero({ lng }: { lng: Locale }) {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button
-                render={<LangLink lng={lng} href="/docs/introduction" />}
+                render={<LangLink lng={lng} href="/about" />}
                 size="lg"
                 className="w-full sm:w-auto"
               >

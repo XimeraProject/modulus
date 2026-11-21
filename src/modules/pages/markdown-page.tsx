@@ -7,7 +7,7 @@ import { pageHead } from '@modulus-learning/host-tanstack-start/lib/head'
 import { Breadcrumbs } from '@modulus-learning/host-tanstack-start/ui/components/breadcrumbs'
 import { GradientGlow } from '@modulus-learning/host-tanstack-start/ui/components/gradient'
 
-import { renderMarkdownSync } from '@/modules/docs/lib/render'
+import { renderMarkdownSync } from './lib/render'
 import { getPageFn } from './pages'
 import type { Page } from './pages.server'
 

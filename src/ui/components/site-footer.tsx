@@ -14,6 +14,8 @@ import osuWhite from '@/ui/images/osu-white.svg'
 interface FooterLink {
   label: string
   href: string
+  /** An absolute URL on another site, opened in a new tab. */
+  external?: boolean
 }
 
 const SECTIONS: { title: string; links: FooterLink[] }[] = [
@@ -21,7 +23,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
     title: 'About',
     links: [
       { label: 'Home', href: '/' },
-      { label: 'Docs', href: '/docs' },
+      { label: 'Docs', href: 'https://modulus-learning.org/docs', external: true },
       { label: 'About', href: '/about' },
     ],
   },
@@ -31,9 +33,12 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { label: 'Privacy Policy', href: '/privacy-policy' },
       { label: 'Terms of Use', href: '/terms-of-use' },
       { label: 'Cookies', href: '/cookies' },
+      { label: 'Accessibility', href: '/accessibility' },
     ],
   },
 ]
+
+const navLinkClass = 'transition-colors hover:text-white hover:underline'
 
 const XIMERA_EMAIL = 'ximera@math.osu.edu'
 
@@ -90,13 +95,21 @@ function FooterNav({ lng }: { lng: Locale }) {
             <ul className="space-y-1 text-white/80">
               {section.links.map((link) => (
                 <li key={link.href}>
-                  <LangLink
-                    className="transition-colors hover:text-white hover:underline"
-                    href={link.href}
-                    lng={lng}
-                  >
-                    {link.label}
-                  </LangLink>
+                  {link.external ? (
+                    <a
+                      className={navLinkClass}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    <LangLink className={navLinkClass} href={link.href} lng={lng}>
+                      {link.label}
+                    </LangLink>
+                  )}
                 </li>
               ))}
             </ul>

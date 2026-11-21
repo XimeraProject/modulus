@@ -1,6 +1,6 @@
 ---
 name: document
-description: Create or revise the OSU installation docs under src/content/docs/.
+description: Create or revise the OSU public pages under src/content/pages/, or the READMEs.
 allowed-tools: Bash, Edit, Glob, Grep, Read, Write, Skill
 argument-hint: [optional path/to/document.md] [optional brief]
 ---

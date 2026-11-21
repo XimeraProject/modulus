@@ -19,7 +19,7 @@ shared skill directly. Every entry point follows the canonical workflow under
 | `/lint-fix` | shared `lint-fix` skill | Biome write pass (safe fixes only) |
 | `/typecheck` | shared `typecheck` skill | TypeScript, no emit |
 | `/verify` | shared `verify` skill | Lint, typecheck, build, and boot the build |
-| `/document` | `writing-docs` skill | Installation docs under `src/content/docs/` |
+| `/document` | `writing-docs` skill | Public pages under `src/content/pages/`, and the READMEs |
 | `/upgrade-modulus` | shared `upgrade-modulus` skill | Move the lockstep packages to a new version |
 | `/deploy` | shared `deploy` skill | Build, push, and deploy to ECS (needs authorisation) |
 
