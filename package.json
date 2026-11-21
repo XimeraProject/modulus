@@ -26,9 +26,9 @@
   "dependencies": {
     "@google-cloud/recaptcha-enterprise": "^7.3.0",
     "@infonomic/uikit": "^6.9.1",
-    "@modulus-learning/core": "0.13.0",
-    "@modulus-learning/host-tanstack-start": "0.13.0",
-    "@modulus-learning/lms-canvas": "0.13.0",
+    "@modulus-learning/core": "0.13.1",
+    "@modulus-learning/host-tanstack-start": "0.13.1",
+    "@modulus-learning/lms-canvas": "0.13.1",
     "@tanstack/react-router": "1.170.46",
     "@tanstack/react-start": "1.169.7",
     "argon2": "^0.45.2",
