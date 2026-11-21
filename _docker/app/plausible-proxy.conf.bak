@@ -1,0 +1,46 @@
+# Backup of the retired Plausible analytics proxy (removed 2026-11-21).
+#
+# Not included anywhere and deliberately kept outside the nginx directory the
+# Dockerfile copies into the image. To restore, put the `http` part in the
+# nginx.conf `http { … }` block and the `server` part in the main server block.
+
+# ---- http block -------------------------------------------------------------
+
+# Proxy cache path for serving cached plausible.io analytics scripts.
+proxy_cache_path /var/run/nginx-cache/jscache levels=1:2 keys_zone=jscache:10m inactive=30d use_temp_path=off max_size=10m;
+
+# ---- main server block ------------------------------------------------------
+
+# Plausible source script and event URL. Change the script URL if you use a
+# different variant of the script.
+set $plausible_script_url https://plausible.io/js/script.file-downloads.js;
+set $plausible_event_url https://plausible.io/api/event;
+
+# Exact-match Plausible script path, proxied and cached.
+location = /modules/js/script.js {
+  access_log off;
+  proxy_pass $plausible_script_url;
+  proxy_set_header Host plausible.io;
+  # Tiny, negligible performance improvement. Very optional.
+  proxy_buffering on;
+  # Cache the script for 6 hours, as long as plausible.io returns a valid response.
+  proxy_cache jscache;
+  proxy_cache_valid 200 6h;
+  proxy_cache_use_stale updating error timeout invalid_header http_500;
+  proxy_ignore_headers "Cache-control";
+  # Optional. Adds a header to tell if you got a cache hit or miss.
+  add_header X-Proxy-Cache $upstream_cache_status;
+}
+
+# Exact-match Plausible event API path.
+location = /modules/api/event {
+  access_log off;
+  proxy_pass $plausible_event_url;
+  proxy_set_header Host plausible.io;
+  proxy_buffering on;
+  proxy_http_version 1.1;
+
+  proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Forwarded-Host  $host;
+}
