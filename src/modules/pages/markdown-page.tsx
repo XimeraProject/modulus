@@ -48,7 +48,7 @@ export function MarkdownPage({ lng, page }: { lng: Locale; page: Page }) {
           <Breadcrumbs lng={lng} breadcrumbs={[{ label: title, href: `/${page.slug}` }]} />
         </Container>
       </Section>
-      <Section className="py-6">
+      <Section className="pt-3 pb-6">
         <Container>
           <article className="prose">
             <h1>{title}</h1>

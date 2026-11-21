@@ -26,5 +26,31 @@
     :scope.dark header:has(> .app-bar) {
       --color-primary-900: var(--scarlet-600);
     }
+
+    /*
+      Prose headings one step down from the kit's scale (2.5 / 2 / 1.75 / 1.55rem), so the
+      content pages read as documents rather than posters, and at 500 rather than the kit's 600.
+      Line height and margins stay the kit's, and so does the body copy, which already steps up
+      on phones. H4 stays above the 1.25rem phone body size so it still reads as a heading there.
+    */
+    .prose :where(h1, h2, h3, h4):not(:where(.not-prose, .not-prose *)) {
+      font-weight: 500;
+    }
+
+    .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
+      font-size: 2.25rem;
+    }
+
+    .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.75rem;
+    }
+
+    .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.5rem;
+    }
+
+    .prose :where(h4):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.3rem;
+    }
   }
 }
