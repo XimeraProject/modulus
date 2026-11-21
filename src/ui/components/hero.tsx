@@ -1,7 +1,6 @@
 import { Button, Container, Section } from '@infonomic/uikit/react'
 import { LangLink, Link } from '@modulus-learning/host-tanstack-start/framework/index'
 import type { Locale } from '@modulus-learning/host-tanstack-start/i18n/i18n-config'
-import { ShieldCheck } from 'lucide-react'
 
 import osuBlack from '@/ui/images/osu-black.svg'
 import osuWhite from '@/ui/images/osu-white.svg'
@@ -34,8 +33,7 @@ export function Hero({ lng }: { lng: Locale }) {
 
             <p className="mb-8 max-w-xl text-pretty text-lg text-gray-700 dark:text-gray-200">
               Modulus connects Ximera's interactive textbooks to Carmen. It records how each student
-              moves through an activity and sends their score to the Carmen gradebook, so you never
-              export or re-enter grades.
+              moves through an activity and sends their score to the Carmen gradebook.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -57,13 +55,6 @@ export function Hero({ lng }: { lng: Locale }) {
                 Visit Ximera
               </Button>
             </div>
-
-            <p className="mt-8 flex max-w-md items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-              <span>
-                Ximera activities never receive a student's email, OSU ID or Carmen grades.
-              </span>
-            </p>
           </div>
 
           <HeroFlow />
