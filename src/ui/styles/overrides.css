@@ -38,7 +38,7 @@
     }
 
     .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
-      font-size: 2.25rem;
+      font-size: 2.125rem;
     }
 
     .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
