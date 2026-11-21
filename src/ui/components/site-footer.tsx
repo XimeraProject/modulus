@@ -136,7 +136,7 @@ function RecaptchaNotice() {
 export function SiteFooter({ lng, sticky = false }: { lng: Locale; sticky?: boolean }) {
   return (
     <div className={`bottom-0 left-0 z-10 w-full overflow-hidden${sticky ? ' sticky' : ''}`}>
-      <footer className="w-full min-w-full bg-scarlet-500 px-[18px] pt-10 pb-8 dark:bg-scarlet-600">
+      <footer className="w-full min-w-full bg-scarlet-500 px-[18px] pt-10 md:px-8 xl:px-12 pb-8 dark:bg-scarlet-600">
         <div className="mx-auto max-w-[1200px] text-white">
           <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
             <div>
