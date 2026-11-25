@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Renders the ECS task definitions for the frontend and admin services from
+// Renders the ECS task definitions for the app and admin services from
 // _docker/aws/aws.env, for one image tag:
 //
 //   node _docker/aws/render-task-definitions.mjs <image-tag>
 //
-// Writes _docker/aws/.rendered/{frontend,admin}.json (gitignored). The variable
+// Writes _docker/aws/.rendered/{app,admin}.json (gitignored). The variable
 // sets mirror the host package's per-mode requirements
 // (@modulus-learning/host-tanstack-start src/config/fixtures/mode-env.ts):
 // config validation fails at boot, naming the setting, if one is missing.
@@ -36,7 +36,7 @@ const need = (key) => {
 }
 
 const image = `${need('AWS_ACCOUNT_ID')}.dkr.ecr.${need('AWS_REGION')}.amazonaws.com/${need('ECR_REPOSITORY')}:${tag}`
-const frontendOrigin = `https://${need('FRONTEND_HOST')}`
+const appOrigin = `https://${need('APP_HOST')}`
 const adminOrigin = `https://${need('ADMIN_HOST')}`
 
 const cookie = (prefix, name, sameSite) => ({
@@ -70,30 +70,30 @@ const common = (host, origin) => ({
   SERVER_BASE_URL: origin,
   // Tokens and LTI launches are issued against the learner-facing origin by
   // both instances.
-  API_JWT_ISSUER: frontendOrigin,
-  API_JWT_AUDIENCE: frontendOrigin,
+  API_JWT_ISSUER: appOrigin,
+  API_JWT_AUDIENCE: appOrigin,
   API_JWT_ACCESS_TOKEN_EXPIRES_IN: '600',
   API_JWT_REFRESH_TOKEN_EXPIRES_IN: '2592000',
-  LTI_REDIRECT_URI: `${frontendOrigin}/routes/lti/launch`,
+  LTI_REDIRECT_URI: `${appOrigin}/routes/lti/launch`,
 })
 
-const frontendEnv = {
-  ...common(need('FRONTEND_HOST'), frontendOrigin),
+const appEnv = {
+  ...common(need('APP_HOST'), appOrigin),
   DEPLOYMENT_MODE: 'frontend',
   JOB_QUEUE_ENABLED: 'false',
   // SameSite=None: the learner surface runs inside the LMS iframe.
   ...cookie('USER_SESSION_COOKIE', 'user_session', 'none'),
   ...cookie('USER_REFRESH_COOKIE', 'user_refresh', 'none'),
-  API_BASE_URL: `${frontendOrigin}/routes`,
+  API_BASE_URL: `${appOrigin}/routes`,
   VITE_RECAPTCHA_ENABLED: 'false',
   VITE_RECAPTCHA_MANDATORY: 'false',
   OAUTH_GITHUB_AUTH_URL: 'https://github.com/login/oauth/authorize',
   OAUTH_GITHUB_ACCESS_TOKEN_URL: 'https://github.com/login/oauth/access_token',
   OAUTH_GITHUB_USER_URL: 'https://api.github.com/user',
-  OAUTH_GITHUB_RETURN_URL: `${frontendOrigin}/routes/oauth/github`,
+  OAUTH_GITHUB_RETURN_URL: `${appOrigin}/routes/oauth/github`,
   OAUTH_GOOGLE_AUTH_URL: 'https://accounts.google.com/o/oauth2/auth',
   OAUTH_GOOGLE_ACCESS_TOKEN_URL: 'https://oauth2.googleapis.com/token',
-  OAUTH_GOOGLE_RETURN_URL: `${frontendOrigin}/routes/oauth/google`,
+  OAUTH_GOOGLE_RETURN_URL: `${appOrigin}/routes/oauth/google`,
 }
 
 const adminEnv = {
@@ -119,7 +119,7 @@ const commonSecrets = [
   'S3_ACCESS_KEY_ID',
   'S3_SECRET_ACCESS_KEY',
 ]
-const frontendSecrets = [
+const appSecrets = [
   ...commonSecrets,
   'OAUTH_GITHUB_CLIENT_ID',
   'OAUTH_GITHUB_CLIENT_SECRET',
@@ -178,14 +178,14 @@ const write = (name, def) => {
   console.log(join(out, `${name}.json`))
 }
 
-// The frontend serves only HTTP (Nitro closes in 25 s); the admin instance
-// must also let an in-flight score submission (60 s) finish.
+// The app (frontend mode) serves only HTTP (Nitro closes in 25 s); the admin
+// instance must also let an in-flight score submission (60 s) finish.
 write(
-  'frontend',
+  'app',
   taskDefinition({
-    family: need('TASK_FAMILY_FRONTEND'),
-    environment: frontendEnv,
-    secrets: frontendSecrets,
+    family: need('TASK_FAMILY_APP'),
+    environment: appEnv,
+    secrets: appSecrets,
     stopTimeout: 30,
   })
 )

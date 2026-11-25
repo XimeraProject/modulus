@@ -6,10 +6,11 @@ description: Use when asked to deploy, release to production, push an image to E
 # Deploying to AWS ECS
 
 Production runs on AWS ECS, EC2 launch type on Graviton (arm64) instances, as
-two services from one image: `frontend` (learners, LTI, agent endpoints) and
-`admin` (administration and background jobs, exactly one task). The scripts and
-the infrastructure they expect are described in `_docker/README.md`; read it
-first.
+two services from one image: `app` (`DEPLOYMENT_MODE=frontend`: learners, LTI,
+agent endpoints) and `admin` (administration and background jobs, exactly one
+task). The scripts and the infrastructure they expect (the `math-shared-alb`
+and `osu-modulus` CloudFormation stacks) are described in `_docker/README.md`;
+read it first.
 
 ## Authorisation
 
@@ -36,8 +37,8 @@ commit messages, PRs, or docs.
 4. **Deploy** (authorised): `./_docker/aws/deploy.sh`. It renders and registers
    both task definitions, runs `modulus db upgrade` as a one-off task from the
    new admin revision and stops if it fails, then updates the admin and
-   frontend services and waits for them to stabilise.
-5. **Check** the public health endpoints for both hosts (`FRONTEND_HOST` and
+   app services and waits for them to stabilise.
+5. **Check** the public health endpoints for both hosts (`APP_HOST` and
    `ADMIN_HOST` from `aws.env`) at `/routes/elb-status`, and confirm each
    reports its mode.
 
